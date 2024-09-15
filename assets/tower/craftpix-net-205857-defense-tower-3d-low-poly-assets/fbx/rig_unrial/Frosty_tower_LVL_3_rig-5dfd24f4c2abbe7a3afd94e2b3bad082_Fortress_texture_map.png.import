@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://66imhgfl7qp5"
+path.s3tc="res://.godot/imported/Frosty_tower_LVL_3_rig-5dfd24f4c2abbe7a3afd94e2b3bad082_Fortress_texture_map.png-1de845dbe99e4c49ba3caf347b0be585.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={}
+
+[deps]
+
+source_file="res://assets/tower/craftpix-net-205857-defense-tower-3d-low-poly-assets/fbx/rig_unrial/Frosty_tower_LVL_3_rig-5dfd24f4c2abbe7a3afd94e2b3bad082_Fortress_texture_map.png"
+dest_files=["res://.godot/imported/Frosty_tower_LVL_3_rig-5dfd24f4c2abbe7a3afd94e2b3bad082_Fortress_texture_map.png-1de845dbe99e4c49ba3caf347b0be585.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0

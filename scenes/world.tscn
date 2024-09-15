@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://d1qhwo8mdnvh0"]
+
+[ext_resource type="PackedScene" uid="uid://tuerfpan86jg" path="res://scenes/player.tscn" id="1_jxmis"]
+[ext_resource type="PackedScene" uid="uid://bhjiuruu6008y" path="res://scenes/plateau_5.tscn" id="4_2ddko"]
+[ext_resource type="PackedScene" uid="uid://dnpkpex10gxcg" path="res://scenes/fire_tower_1.tscn" id="8_gan75"]
+[ext_resource type="Script" path="res://scripts/MountainSpawner.gd" id="10_mrcv3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_da76r"]
+sky_top_color = Color(0.145098, 0.466667, 0.72549, 1)
+sky_horizon_color = Color(0.654902, 0.631373, 0.788235, 1)
+
+[sub_resource type="Sky" id="Sky_6xxul"]
+sky_material = SubResource("ProceduralSkyMaterial_da76r")
+
+[sub_resource type="Environment" id="Environment_b3o0o"]
+background_mode = 2
+sky = SubResource("Sky_6xxul")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w13y7"]
+size = Vector3(2500, 1, 2500)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guyjj"]
+albedo_color = Color(0.227451, 0.439216, 0.180392, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_qmyby"]
+size = Vector2(2500, 2500)
+orientation = 1
+
+[node name="World" type="WorldEnvironment"]
+environment = SubResource("Environment_b3o0o")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_w13y7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+material_override = SubResource("StandardMaterial3D_guyjj")
+mesh = SubResource("QuadMesh_qmyby")
+
+[node name="Player" parent="." instance=ExtResource("1_jxmis")]
+transform = Transform3D(-0.561953, 0, 0.827169, 0, 1, 0, -0.827169, 0, -0.561953, -2.10916, 9.24645, -27.3499)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.091154, 0.995837, 0, -0.995837, -0.091154, 0, 18.9696, -0.33247)
+
+[node name="Plateau5" parent="." instance=ExtResource("4_2ddko")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58.2076, 0, 12.5932)
+
+[node name="FireTower1" parent="." instance=ExtResource("8_gan75")]
+transform = Transform3D(-0.183076, 0, 0.983099, 0, 1, 0, -0.983099, 0, -0.183076, -55.8983, 16.9105, 9.95673)
+
+[node name="Spawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -603.78, 0, -715.498)
+script = ExtResource("10_mrcv3")

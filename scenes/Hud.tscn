@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://m7ejeoqhcf1f"]
+
+[ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_1djd5"]
+[ext_resource type="Script" path="res://scripts/Hud.gd" id="1_c81eo"]
+
+[node name="Hud" type="Node2D"]
+script = ExtResource("1_c81eo")
+
+[node name="TimberLabel" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 202.0
+offset_bottom = 111.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+
+[node name="StoneLabel" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 242.0
+offset_bottom = 159.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+text = "Stone: 0 / 10
+"
+
+[node name="TimberCollectLabel" type="Label" parent="."]
+visible = false
+offset_left = 848.0
+offset_top = 720.0
+offset_right = 1066.0
+offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+text = "Collect ( E )"
+
+[node name="StoneCollectLabel" type="Label" parent="."]
+visible = false
+offset_left = 848.0
+offset_top = 720.0
+offset_right = 1066.0
+offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+text = "Collect ( E )"

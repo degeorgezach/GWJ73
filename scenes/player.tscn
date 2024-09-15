@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://tuerfpan86jg"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_v6spb"]
+[ext_resource type="Shader" path="res://scripts/player.gdshader" id="2_rlfmy"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_squcg"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eqe3g"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="FogMaterial" id="FogMaterial_8n3qj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2di7x"]
+render_priority = 0
+next_pass = SubResource("FogMaterial_8n3qj")
+shader = ExtResource("2_rlfmy")
+
+[sub_resource type="QuadMesh" id="QuadMesh_28rt2"]
+size = Vector2(10, 10)
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0, 0, 0)
+script = ExtResource("1_v6spb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_squcg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_eqe3g")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.528195, 0.367352)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.26565)
+material_override = SubResource("ShaderMaterial_2di7x")
+mesh = SubResource("QuadMesh_28rt2")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0.00081116, 0.102631, -0.630777)
+target_position = Vector3(0, 0, -2)

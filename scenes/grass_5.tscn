@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://x12a7nwmnaou"]
+
+[ext_resource type="Texture2D" uid="uid://cfgtws0y3wl6k" path="res://assets/Textures/T_Grass.png" id="2_edccj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1c7tp"]
+albedo_texture = ExtResource("2_edccj")
+
+[node name="Grass5"]
+
+[node name="Grass_005" parent="RootNode" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_1c7tp")

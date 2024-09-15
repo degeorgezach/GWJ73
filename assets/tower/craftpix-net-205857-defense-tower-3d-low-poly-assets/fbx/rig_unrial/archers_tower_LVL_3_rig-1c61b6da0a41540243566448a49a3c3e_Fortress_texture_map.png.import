@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://c2w836wxneorw"
+path.s3tc="res://.godot/imported/archers_tower_LVL_3_rig-1c61b6da0a41540243566448a49a3c3e_Fortress_texture_map.png-70f98b081a43926b0129de5590bd3540.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={}
+
+[deps]
+
+source_file="res://assets/tower/craftpix-net-205857-defense-tower-3d-low-poly-assets/fbx/rig_unrial/archers_tower_LVL_3_rig-1c61b6da0a41540243566448a49a3c3e_Fortress_texture_map.png"
+dest_files=["res://.godot/imported/archers_tower_LVL_3_rig-1c61b6da0a41540243566448a49a3c3e_Fortress_texture_map.png-70f98b081a43926b0129de5590bd3540.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0
