@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://tuerfpan86jg" path="res://scenes/player.tscn" id="1_jxmis"]
 [ext_resource type="PackedScene" uid="uid://bhjiuruu6008y" path="res://scenes/plateau_5.tscn" id="4_2ddko"]
 [ext_resource type="PackedScene" uid="uid://dnpkpex10gxcg" path="res://scenes/fire_tower_1.tscn" id="8_gan75"]
-[ext_resource type="Script" path="res://scripts/MountainSpawner.gd" id="10_mrcv3"]
+[ext_resource type="Script" path="res://scripts/Spawner.gd" id="10_mrcv3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_da76r"]
 sky_top_color = Color(0.145098, 0.466667, 0.72549, 1)
