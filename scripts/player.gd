@@ -63,6 +63,7 @@ func _process(delta):
 	if Hud.wood_current >= Hud.wood_needed and Hud.stone_current >= Hud.stone_needed and !condition_met:
 		condition_met = true
 		Hud.current_message = 1
+		Hud.typing = true
 		Hud.start_dialogue()
 	
 	if condition_met:
@@ -212,33 +213,6 @@ func collect_stone():
 	can_collect_stone = false
 
 
-
-
-
-#func rotate_camera_to_target(delta: float):
-	#if target_node:
-		## Get the direction vector from the camera to the target
-		#var target_direction = (target_node.global_transform.origin - global_transform.origin).normalized()
-		## Calculate the forward vector of the camera
-		#var camera_forward = -global_transform.basis.z.normalized()
-		## Calculate the right vector of the camera
-		#var camera_right = global_transform.basis.x.normalized()
-		## Calculate the angle around the up axis
-		#var horizontal_angle = camera_forward.angle_to(target_direction)
-		## Project the target direction onto the horizontal plane
-		#var horizontal_target_direction = target_direction
-		#horizontal_target_direction.y = 0
-		#horizontal_target_direction = horizontal_target_direction.normalized()
-		## Calculate the vertical angle between the camera forward and the target direction
-		#var vertical_angle = atan2(target_direction.y, horizontal_target_direction.dot(camera_forward))
-		## Build the rotation basis to face the target
-		#var target_basis = Basis()
-		#target_basis = target_basis.looking_at(target_direction, Vector3.UP)
-		#target_basis = Basis(Vector3.UP, horizontal_angle) * target_basis
-		## Smoothly rotate the camera to face the target
-		#global_transform.basis = global_transform.basis.slerp(target_basis, rotate_speed * delta)
-
-
 func look_at_target():
 	if target_node != null:
 		var target_position = target_node.global_transform.origin
@@ -253,7 +227,7 @@ func handle_tower_interaction():
 		var collider = raycast_tower.get_collider()
 		print("Colliding with: ", collider)
 		# Check if the collider is a tree (you can tag the tree with a group, like "tree")
-		if collider != null and collider.is_in_group("towers"):
+		if collider != null and collider.is_in_group("towers") and condition_met:
 			# Player is close and looking at a tree
 			Hud.TowerUpgradeLabel.visible = true
 			tower_in_sight = collider
@@ -263,8 +237,7 @@ func handle_tower_interaction():
 			Hud.TowerUpgradeLabel.visible = false
 			tower_in_sight = null
 			can_upgrade_tower = false
-	else:
-		
+	else:		
 		Hud.TowerUpgradeLabel.visible = false
 		tower_in_sight = null
 		can_upgrade_tower = false
@@ -273,14 +246,43 @@ func handle_tower_interaction():
 	
 func upgrade_tower():
 	can_upgrade_tower = false
-	Hud.TowerUpgradeLabel.visible = false
-	
+	Hud.TowerUpgradeLabel.visible = false	
+	node1 = tower_in_sight	
 	var transform = tower_in_sight.global_transform
-	# Remove the old node
 	tower_in_sight.get_owner().queue_free()
-	# Instance the new node
-	var new_node = load("res://scenes/fire_tower_2.tscn").instantiate()
-	# Set the transform of the new node to match the old node
+	var new_node = load("res://scenes/fire_tower_2.tscn").instantiate()	
+	node2 = new_node	
 	new_node.global_transform = transform
-	# Add the new node to the scene
 	get_parent().add_child(new_node)
+	tower_in_sight = new_node
+	advance_level()
+
+
+func advance_level():
+	Hud.wood_current = Hud.wood_current - Hud.wood_needed
+	Hud.stone_current = Hud.stone_current - Hud.stone_needed	
+	Hud.wood_needed = ceil(Hud.wood_needed * 1.5)
+	Hud.stone_needed = ceil(Hud.stone_needed * 1.5)
+	condition_met = false
+	can_upgrade_tower = false
+	Hud.TowerUpgradeLabel.visible = false
+
+# Nodes that will alternate
+@export var node1: Node
+@export var node2: Node
+
+# Time to wait between flashes (in seconds)
+@export var wait_time: float = 0.5
+
+# Coroutine function to handle the flashing effect
+func flashing_effect() -> void:
+	while true:
+		if is_instance_valid(node1):
+			remove_child(node1)  # Delete node1
+			add_child(node2)     # Add node2
+		await get_tree().create_timer(wait_time).timeout
+
+		if is_instance_valid(node2):
+			remove_child(node2)  # Delete node2
+			add_child(node1)     # Add node1
+		await get_tree().create_timer(wait_time).timeout

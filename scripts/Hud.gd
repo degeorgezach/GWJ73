@@ -9,7 +9,9 @@ var messages = [ "A mysterious and sentient tower has appeared from the shadows,
 
 Brave adventurer, gather the necessary materials to enhance the tower before the time runs out. Fail to do so, and you will face the wrath of the tower’s dark fury.",
 
-"You have gathered the required materials. The tower’s demand is clear: you must perform the upgrade now."
+"You have gathered the required materials. The tower’s demand is clear: 
+	
+	You must return to the tower."
 ]
 
 
@@ -24,7 +26,7 @@ var read_time = 20
 var current_message = 0
 var display = ""
 var current_char = 0
-var intro_done = false
+var typing = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,16 +40,17 @@ func _process(delta):
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
 	if Input.is_action_just_pressed("action"):
-		if !intro_done and $Label.text != messages[current_message]:
+		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
-			intro_done = true
+			typing = false
 			
 
 
 func start_dialogue():
+	typing = true
 	display = ""
 	current_char = 0	
 	$next_char.set_wait_time(typing_speed)

@@ -54,3 +54,7 @@ transform = Transform3D(-0.183076, 0, 0.983099, 0, 1, 0, -0.983099, 0, -0.183076
 [node name="Spawner" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -360.78, 0, -488.498)
 script = ExtResource("10_mrcv3")
+
+[node name="TowerUpgradeTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="TowerUpgradeTimer" to="Player" method="_on_tower_upgrade_timer_timeout"]
