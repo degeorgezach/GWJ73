@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var TimberCollectLabel = $TimberCollectLabel
 @onready var StoneCollectLabel = $StoneCollectLabel
+@onready var TowerUpgradeLabel = $TowerUpgradeLabel
 
 
 var messages = [ "A mysterious and sentient tower has appeared from the shadows, looming ominously over the land. This enigmatic structure demands upgrades to unlock its true power. 
@@ -13,9 +14,9 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 
 var wood_current = 0 
-var wood_needed = 15
+var wood_needed = 3
 var stone_current = 0 
-var stone_needed = 8
+var stone_needed = 2
 
 var typing_speed = .055
 var read_time = 20

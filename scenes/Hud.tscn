@@ -26,9 +26,9 @@ text = "Stone: 0 / 10
 
 [node name="TimberCollectLabel" type="Label" parent="."]
 visible = false
-offset_left = 848.0
+offset_left = 888.0
 offset_top = 720.0
-offset_right = 1066.0
+offset_right = 1106.0
 offset_bottom = 807.0
 theme_override_fonts/font = ExtResource("1_1djd5")
 theme_override_font_sizes/font_size = 32
@@ -36,13 +36,22 @@ text = "Collect ( E )"
 
 [node name="StoneCollectLabel" type="Label" parent="."]
 visible = false
-offset_left = 848.0
+offset_left = 888.0
 offset_top = 720.0
-offset_right = 1066.0
+offset_right = 1106.0
 offset_bottom = 807.0
 theme_override_fonts/font = ExtResource("1_1djd5")
 theme_override_font_sizes/font_size = 32
 text = "Collect ( E )"
+
+[node name="TowerUpgradeLabel" type="Label" parent="."]
+offset_left = 816.0
+offset_top = 720.0
+offset_right = 1150.0
+offset_bottom = 807.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+text = "Upgrade Tower ( E )"
 
 [node name="Label" type="Label" parent="."]
 offset_left = 304.0

@@ -14,7 +14,7 @@ data = PackedVector3Array(3.3982, 18.7816, -0.2344, 3.6604, 18.8575, -0.2344, 3.
 [node name="Fire_tower_LVL_1" parent="RootNode" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_7j2qq")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="RootNode/Fire_tower_LVL_1" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="RootNode/Fire_tower_LVL_1" index="0" groups=["towers"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RootNode/Fire_tower_LVL_1/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_1wdaq")

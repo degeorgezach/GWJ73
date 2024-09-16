@@ -8,6 +8,7 @@ var sensitivity_x = 2.0  # Sensitivity for horizontal (left/right) camera moveme
 var sensitivity_y = 128.0  # Increased sensitivity for vertical (up/down) camera movement
 var invert_y = true     # Option to invert Y axis
 var joystick_deadzone = 0.1  # Deadzone to prevent jitter
+var is_camera_locked = false
 
 var sensitivity = 0.003
 @onready var camera = $Camera3D
@@ -16,6 +17,10 @@ var can_collect_wood: bool = false
 var tree_in_sight: Node = null
 var can_collect_stone: bool = false
 var stone_in_sight: Node = null
+
+@onready var raycast_tower = $Camera3D/RayCast3DTower
+var tower_in_sight: Node = null
+var can_upgrade_tower: bool = false
 
 @export var target_node: Node
 @export var move_speed: float = 50.0  # Speed of the camera movement
@@ -53,6 +58,7 @@ func _process(delta):
 	handle_joystick_input(delta)
 	handle_tree_interaction()
 	handle_stone_interaction()
+	handle_tower_interaction()
 	
 	if Hud.wood_current >= Hud.wood_needed and Hud.stone_current >= Hud.stone_needed and !condition_met:
 		condition_met = true
@@ -60,7 +66,8 @@ func _process(delta):
 		Hud.start_dialogue()
 	
 	if condition_met:
-		rotate_camera_to_target(delta)
+		look_at_target()
+		#rotate_camera_to_target(delta)
 		# Smoothly zoom in
 		current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)
 	else:
@@ -97,7 +104,7 @@ func _physics_process(delta):
 
 func _unhandled_input(event):
 	# Move camera with mouse
-	if event is InputEventMouseMotion:
+	if !is_camera_locked and event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * sensitivity)
 		camera.rotate_x(-event.relative.y * sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(70))
@@ -110,10 +117,8 @@ func _unhandled_input(event):
 # Handle joystick input
 func handle_joystick_input(delta):
 	var device_id = 0  # Assuming first controller (usually ID 0)
-
 	# Get the right joystick input using Input.get_vector()
 	var joystick_input = Input.get_vector("look_right", "look_left", "look_down", "look_up", joystick_deadzone)
-
 	# If the joystick input exceeds the deadzone, apply the camera movement
 	if joystick_input.length() > joystick_deadzone:
 		# Left/Right rotation (yaw)
@@ -128,14 +133,12 @@ func handle_joystick_input(delta):
 		rotation_degrees.x = new_rotation_x
 
 
-
-
 # Detect if player is looking at the tree
 func handle_tree_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
-		print("Colliding with: ", collider)
+		#print("Colliding with: ", collider)
 		# Check if the collider is a tree (you can tag the tree with a group, like "tree")
 		if collider != null and collider.is_in_group("trees"):
 			# Player is close and looking at a tree
@@ -159,7 +162,7 @@ func handle_stone_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
-		print("Colliding with: ", collider)
+		#print("Colliding with: ", collider)
 		# Check if the collider is a stone
 		if collider != null and collider.is_in_group("stones"):
 			# Player is close and looking at a tree
@@ -183,6 +186,8 @@ func _input(event):
 		collect_wood()
 	elif event.is_action_pressed("action") and can_collect_stone:
 		collect_stone()
+	elif event.is_action_pressed("action") and can_upgrade_tower and condition_met:
+		upgrade_tower()
 
 func collect_wood():
 	if tree_in_sight.is_in_group("mid"):
@@ -210,32 +215,62 @@ func collect_stone():
 
 
 
-func rotate_camera_to_target(delta: float):
+#func rotate_camera_to_target(delta: float):
+	#if target_node:
+		## Get the direction vector from the camera to the target
+		#var target_direction = (target_node.global_transform.origin - global_transform.origin).normalized()
+		## Calculate the forward vector of the camera
+		#var camera_forward = -global_transform.basis.z.normalized()
+		## Calculate the right vector of the camera
+		#var camera_right = global_transform.basis.x.normalized()
+		## Calculate the angle around the up axis
+		#var horizontal_angle = camera_forward.angle_to(target_direction)
+		## Project the target direction onto the horizontal plane
+		#var horizontal_target_direction = target_direction
+		#horizontal_target_direction.y = 0
+		#horizontal_target_direction = horizontal_target_direction.normalized()
+		## Calculate the vertical angle between the camera forward and the target direction
+		#var vertical_angle = atan2(target_direction.y, horizontal_target_direction.dot(camera_forward))
+		## Build the rotation basis to face the target
+		#var target_basis = Basis()
+		#target_basis = target_basis.looking_at(target_direction, Vector3.UP)
+		#target_basis = Basis(Vector3.UP, horizontal_angle) * target_basis
+		## Smoothly rotate the camera to face the target
+		#global_transform.basis = global_transform.basis.slerp(target_basis, rotate_speed * delta)
+
+
+func look_at_target():
 	if target_node:
-		# Get the direction vector from the camera to the target
-		var target_direction = (target_node.global_transform.origin - global_transform.origin).normalized()
+		var target_position = target_node.global_transform.origin
+		target_position.y += 15
+		$Camera3D.look_at(target_position, Vector3.UP)
+		look_at(target_position, Vector3.UP)
 
-		# Calculate the forward vector of the camera
-		var camera_forward = -global_transform.basis.z.normalized()
+# Detect if player is looking at the tower
+func handle_tower_interaction():
+	# Check if the raycast_tower is colliding
+	if raycast_tower.is_colliding():
+		var collider = raycast_tower.get_collider()
+		print("Colliding with: ", collider)
+		# Check if the collider is a tree (you can tag the tree with a group, like "tree")
+		if collider != null and collider.is_in_group("towers"):
+			# Player is close and looking at a tree
+			Hud.TowerUpgradeLabel.visible = true
+			tower_in_sight = collider
+			can_upgrade_tower = true
+		else:
+			# Not looking at a tree
+			Hud.TowerUpgradeLabel.visible = false
+			tower_in_sight = null
+			can_upgrade_tower = false
+	else:
+		
+		Hud.TowerUpgradeLabel.visible = false
+		tower_in_sight = null
+		can_upgrade_tower = false
 
-		# Calculate the right vector of the camera
-		var camera_right = global_transform.basis.x.normalized()
 
-		# Calculate the angle around the up axis
-		var horizontal_angle = camera_forward.angle_to(target_direction)
-
-		# Project the target direction onto the horizontal plane
-		var horizontal_target_direction = target_direction
-		horizontal_target_direction.y = 0
-		horizontal_target_direction = horizontal_target_direction.normalized()
-
-		# Calculate the vertical angle between the camera forward and the target direction
-		var vertical_angle = atan2(target_direction.y, horizontal_target_direction.dot(camera_forward))
-
-		# Build the rotation basis to face the target
-		var target_basis = Basis()
-		target_basis = target_basis.looking_at(target_direction, Vector3.UP)
-		target_basis = Basis(Vector3.UP, horizontal_angle) * target_basis
-
-		# Smoothly rotate the camera to face the target
-		global_transform.basis = global_transform.basis.slerp(target_basis, rotate_speed * delta)
+	
+func upgrade_tower():
+	Hud.TowerUpgradeLabel.visible = false
+	can_upgrade_tower = false
