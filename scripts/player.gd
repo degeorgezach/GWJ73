@@ -42,7 +42,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var world = self.get_owner()
-	target_node = world.get_node("FireTower1")
+	target_node = world.get_node("Tower")
 
 	current_fov = target_fov
 	set_camera_perspective(current_fov)
@@ -240,7 +240,7 @@ func collect_stone():
 
 
 func look_at_target():
-	if target_node:
+	if target_node != null:
 		var target_position = target_node.global_transform.origin
 		target_position.y += 15
 		$Camera3D.look_at(target_position, Vector3.UP)
@@ -272,5 +272,15 @@ func handle_tower_interaction():
 
 	
 func upgrade_tower():
-	Hud.TowerUpgradeLabel.visible = false
 	can_upgrade_tower = false
+	Hud.TowerUpgradeLabel.visible = false
+	
+	var transform = tower_in_sight.global_transform
+	# Remove the old node
+	tower_in_sight.get_owner().queue_free()
+	# Instance the new node
+	var new_node = load("res://scenes/fire_tower_2.tscn").instantiate()
+	# Set the transform of the new node to match the old node
+	new_node.global_transform = transform
+	# Add the new node to the scene
+	get_parent().add_child(new_node)
