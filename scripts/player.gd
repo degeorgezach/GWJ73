@@ -11,13 +11,24 @@ var joystick_deadzone = 0.1  # Deadzone to prevent jitter
 
 var sensitivity = 0.003
 @onready var camera = $Camera3D
-
-
 @onready var raycast = $Camera3D/RayCast3D
 var can_collect_wood: bool = false
 var tree_in_sight: Node = null
 var can_collect_stone: bool = false
 var stone_in_sight: Node = null
+
+@export var target_node: Node
+@export var move_speed: float = 50.0  # Speed of the camera movement
+@export var rotate_speed: float = 50.0  # Speed of the camera rotation
+
+var condition_met = false  # Placeholder for your condition logic
+
+var target_fov = 60.0  # Default field of view for your camera
+var zoomed_in_fov = 35.0  # Desired FOV when zoomed in
+var zoom_speed = 1.0  # Adjust the speed of zooming
+var current_fov = 60.0  # Keep track of the current FOV
+var near_clip = 0.1  # Near clipping plane
+var far_clip = 1000.0  # Far clipping plane
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -25,13 +36,38 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	var world = self.get_owner()
+	target_node = world.get_node("FireTower1")
+
+	current_fov = target_fov
+	set_camera_perspective(current_fov)
 
 
-func _process(delta):			
+# Sets the camera's perspective projection with FOV, near, and far clipping planes
+func set_camera_perspective(fov: float):
+	var aspect_ratio = get_viewport().get_size().x / get_viewport().get_size().y
+	$Camera3D.set_perspective(fov, near_clip, far_clip)
+
+func _process(delta):
 	# Handle joystick input in the same function
 	handle_joystick_input(delta)
 	handle_tree_interaction()
 	handle_stone_interaction()
+	
+	if Hud.wood_current >= Hud.wood_needed and Hud.stone_current >= Hud.stone_needed and !condition_met:
+		condition_met = true
+		Hud.current_message = 1
+		Hud.start_dialogue()
+	
+	if condition_met:
+		rotate_camera_to_target(delta)
+		# Smoothly zoom in
+		current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)
+	else:
+		# Reset to default FOV if condition no longer met
+		current_fov = lerp(current_fov, target_fov, zoom_speed * delta)
+	# Apply the new FOV
+	set_camera_perspective(current_fov)
 	
 	if Input.is_action_just_pressed("escape"):
 		get_tree().quit()
@@ -149,7 +185,10 @@ func _input(event):
 		collect_stone()
 
 func collect_wood():
-	Hud.wood_current += 1
+	if tree_in_sight.is_in_group("mid"):
+		Hud.wood_current += 4
+	else:
+		Hud.wood_current += 2
 	var tree = tree_in_sight.get_owner()
 	tree.queue_free()
 	Hud.TimberCollectLabel.visible = false
@@ -158,8 +197,45 @@ func collect_wood():
 	
 	
 func collect_stone():
-	Hud.stone_current += 1
+	if stone_in_sight.is_in_group("small"):
+		Hud.stone_current += 1
+	elif stone_in_sight.is_in_group("mid"):
+		Hud.stone_current += 3
 	var stone = stone_in_sight.get_owner()
 	stone.queue_free()
 	Hud.StoneCollectLabel.visible = false
 	can_collect_stone = false
+
+
+
+
+
+func rotate_camera_to_target(delta: float):
+	if target_node:
+		# Get the direction vector from the camera to the target
+		var target_direction = (target_node.global_transform.origin - global_transform.origin).normalized()
+
+		# Calculate the forward vector of the camera
+		var camera_forward = -global_transform.basis.z.normalized()
+
+		# Calculate the right vector of the camera
+		var camera_right = global_transform.basis.x.normalized()
+
+		# Calculate the angle around the up axis
+		var horizontal_angle = camera_forward.angle_to(target_direction)
+
+		# Project the target direction onto the horizontal plane
+		var horizontal_target_direction = target_direction
+		horizontal_target_direction.y = 0
+		horizontal_target_direction = horizontal_target_direction.normalized()
+
+		# Calculate the vertical angle between the camera forward and the target direction
+		var vertical_angle = atan2(target_direction.y, horizontal_target_direction.dot(camera_forward))
+
+		# Build the rotation basis to face the target
+		var target_basis = Basis()
+		target_basis = target_basis.looking_at(target_direction, Vector3.UP)
+		target_basis = Basis(Vector3.UP, horizontal_angle) * target_basis
+
+		# Smoothly rotate the camera to face the target
+		global_transform.basis = global_transform.basis.slerp(target_basis, rotate_speed * delta)

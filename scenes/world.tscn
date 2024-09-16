@@ -52,5 +52,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -58.2076, 0, 12.5932)
 transform = Transform3D(-0.183076, 0, 0.983099, 0, 1, 0, -0.983099, 0, -0.183076, -55.8983, 16.9105, 9.95673)
 
 [node name="Spawner" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -603.78, 0, -715.498)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -360.78, 0, -488.498)
 script = ExtResource("10_mrcv3")

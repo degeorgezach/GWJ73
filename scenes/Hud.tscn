@@ -43,3 +43,16 @@ offset_bottom = 807.0
 theme_override_fonts/font = ExtResource("1_1djd5")
 theme_override_font_sizes/font_size = 32
 text = "Collect ( E )"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 304.0
+offset_top = 800.0
+offset_right = 1584.0
+offset_bottom = 1005.0
+theme_override_fonts/font = ExtResource("1_1djd5")
+theme_override_font_sizes/font_size = 32
+autowrap_mode = 2
+
+[node name="next_char" type="Timer" parent="."]
+
+[connection signal="timeout" from="next_char" to="." method="_on_next_char_timeout"]

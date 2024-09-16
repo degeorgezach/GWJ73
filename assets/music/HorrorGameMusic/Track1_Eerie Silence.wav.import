@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cnegdv4vv7vje"
+path="res://.godot/imported/Track1_Eerie Silence.wav-38df150a216dfa955be680f50f44f08a.sample"
+
+[deps]
+
+source_file="res://assets/music/HorrorGameMusic/Track1_Eerie Silence.wav"
+dest_files=["res://.godot/imported/Track1_Eerie Silence.wav-38df150a216dfa955be680f50f44f08a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

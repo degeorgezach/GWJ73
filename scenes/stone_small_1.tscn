@@ -14,7 +14,7 @@ data = PackedVector3Array(-0.2031, 0.0918, -0.1867, -0.1721, 0.1833, 0, -0.2605,
 [node name="Stone_lit_001" parent="RootNode" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_pry1y")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="RootNode/Stone_lit_001" index="0" groups=["stones"]]
+[node name="StaticBody3D" type="StaticBody3D" parent="RootNode/Stone_lit_001" index="0" groups=["small", "stones"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RootNode/Stone_lit_001/StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_a3n3m")

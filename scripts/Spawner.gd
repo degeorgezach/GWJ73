@@ -1,11 +1,16 @@
 extends Node3D
 
 @export var scenes: Array = [ 
-	"res://scenes/tree_1.tscn",
-	"res://scenes/stone_small_1.tscn"
+	"res://scenes/tree_01.tscn",
+	"res://scenes/tree_02.tscn",
+	"res://scenes/tree_03.tscn",
+	"res://scenes/stone_small_1.tscn",
+	"res://scenes/stone_small_02.tscn",
+	"res://scenes/stone_mid_01.tscn",
+	"res://scenes/stone_mid_02.tscn"
 	]
 
-@export var ground_size: Vector2 = Vector2(1500, 1500) # Size of your ground area
+@export var ground_size: Vector2 = Vector2(750, 750) # Size of your ground area
 @export var density: int = 1500 # Number of scenes to place
 
 func _ready():

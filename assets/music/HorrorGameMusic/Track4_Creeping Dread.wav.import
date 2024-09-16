@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dk0dwy1evydji"
+path="res://.godot/imported/Track4_Creeping Dread.wav-0a453de5d71b5aa82d305e736268ccd2.sample"
+
+[deps]
+
+source_file="res://assets/music/HorrorGameMusic/Track4_Creeping Dread.wav"
+dest_files=["res://.godot/imported/Track4_Creeping Dread.wav-0a453de5d71b5aa82d305e736268ccd2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

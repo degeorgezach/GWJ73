@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d3i5864ekg616"
+path="res://.godot/imported/Track6(Bonus)_Suspenseful Solitude.wav-928713cec3003dc66c5d69a62b9becd0.sample"
+
+[deps]
+
+source_file="res://assets/music/HorrorGameMusic/Track6(Bonus)_Suspenseful Solitude.wav"
+dest_files=["res://.godot/imported/Track6(Bonus)_Suspenseful Solitude.wav-928713cec3003dc66c5d69a62b9becd0.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
