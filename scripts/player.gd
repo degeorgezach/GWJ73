@@ -27,6 +27,7 @@ var can_upgrade_tower: bool = false
 @export var rotate_speed: float = 50.0  # Speed of the camera rotation
 
 var condition_met = false  # Placeholder for your condition logic
+var something_bad_happening = false
 
 var target_fov = 60.0  # Default field of view for your camera
 var zoomed_in_fov = 35.0  # Desired FOV when zoomed in
@@ -54,7 +55,6 @@ func set_camera_perspective(fov: float):
 	$Camera3D.set_perspective(fov, near_clip, far_clip)
 
 func _process(delta):
-	# Handle joystick input in the same function
 	handle_joystick_input(delta)
 	handle_tree_interaction()
 	handle_stone_interaction()
@@ -68,7 +68,6 @@ func _process(delta):
 	
 	if condition_met:
 		look_at_target()
-		#rotate_camera_to_target(delta)
 		# Smoothly zoom in
 		current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)
 	else:
@@ -79,17 +78,18 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("escape"):
 		get_tree().quit()
+		
+	if Hud.time_left <= 0:
+		something_bad_happens(delta)
 
 
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -99,7 +99,6 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
 	move_and_slide()
 
 
@@ -113,18 +112,14 @@ func _unhandled_input(event):
 		$Camera3D/MeshInstance3D.position.z -= 1
 
 
-
-
-# Handle joystick input
 func handle_joystick_input(delta):
-	var device_id = 0  # Assuming first controller (usually ID 0)
+	var device_id = 0
 	# Get the right joystick input using Input.get_vector()
 	var joystick_input = Input.get_vector("look_right", "look_left", "look_down", "look_up", joystick_deadzone)
 	# If the joystick input exceeds the deadzone, apply the camera movement
 	if joystick_input.length() > joystick_deadzone:
 		# Left/Right rotation (yaw)
 		rotate_y(joystick_input.x * sensitivity_x * delta)
-
 		# Up/Down rotation (pitch)
 		var pitch_change = joystick_input.y * sensitivity_y * delta
 		if invert_y:
@@ -134,7 +129,6 @@ func handle_joystick_input(delta):
 		rotation_degrees.x = new_rotation_x
 
 
-# Detect if player is looking at the tree
 func handle_tree_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
@@ -158,7 +152,6 @@ func handle_tree_interaction():
 		can_collect_wood = false
 
 
-# Detect if player is looking at the stone
 func handle_stone_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
@@ -200,8 +193,7 @@ func collect_wood():
 	Hud.TimberCollectLabel.visible = false
 	can_collect_wood = false
 	
-	
-	
+		
 func collect_stone():
 	if stone_in_sight.is_in_group("small"):
 		Hud.stone_current += 1
@@ -220,7 +212,7 @@ func look_at_target():
 		$Camera3D.look_at(target_position, Vector3.UP)
 		look_at(target_position, Vector3.UP)
 
-# Detect if player is looking at the tower
+
 func handle_tower_interaction():
 	# Check if the raycast_tower is colliding
 	if raycast_tower.is_colliding():
@@ -243,21 +235,17 @@ func handle_tower_interaction():
 		can_upgrade_tower = false
 
 
-	
 func upgrade_tower():
 	if Hud.current_level < 4:
-		Hud.TowerUpgradeLabel.visible = false	
-		node1 = tower_in_sight	
+		Hud.TowerUpgradeLabel.visible = false
 		var transform = tower_in_sight.global_transform
 		tower_in_sight.get_owner().queue_free()
 		var path = "res://scenes/fire_tower_" + str(Hud.current_level + 1) + ".tscn"
-		var new_node = load(path).instantiate()	
-		node2 = new_node	
+		var new_node = load(path).instantiate()
 		new_node.global_transform = transform
 		get_parent().add_child(new_node)
 		tower_in_sight = new_node
 		target_node = new_node
-		target_node.scale = Vector3(Hud.current_level / 10 + 1, Hud.current_level / 10 + 1, Hud.current_level / 10 + 1)
 		advance_level()
 	elif Hud.current_level == 4:
 		$Music.Change(2)
@@ -279,22 +267,23 @@ func advance_level():
 	Hud.current_level += 1
 	Hud.set_level_timer()
 
-# Nodes that will alternate
-@export var node1: Node
-@export var node2: Node
 
-# Time to wait between flashes (in seconds)
-@export var wait_time: float = 0.5
+@export var vibration_intensity: float = 5.0  # Intensity of the vibration
+@export var vibration_speed: float = 0.1  # Speed of vibration
+var original_position: Vector2
 
-# Coroutine function to handle the flashing effect
-func flashing_effect() -> void:
-	while true:
-		if is_instance_valid(node1):
-			remove_child(node1)  # Delete node1
-			add_child(node2)     # Add node2
-		await get_tree().create_timer(wait_time).timeout
+func something_bad_happens(delta):
+	Hud.current_message = 2
+	if Hud.typing == false and !something_bad_happening:
+		something_bad_happening = true
+		Hud.start_dialogue()
+	look_at_target()
+	current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)	
+	set_camera_perspective(current_fov)
+	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
+	# Create a frantic vibration effect by randomly offsetting the label's position    
+	original_position = Hud.Content.position
+	var random_x = randf_range(-vibration_intensity, vibration_intensity)
+	var random_y = randf_range(-vibration_intensity, vibration_intensity)
+	Hud.Content.position = original_position + Vector2(random_x, random_y)
 
-		if is_instance_valid(node2):
-			remove_child(node2)  # Delete node2
-			add_child(node1)     # Add node1
-		await get_tree().create_timer(wait_time).timeout

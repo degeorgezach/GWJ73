@@ -11,7 +11,9 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 "You have gathered the required materials. The tower’s demand is clear: 
 	
-	You must return to the tower."
+	You must return to the tower.",
+	
+"You're out of time! Now we both suffer… unless you do better. Restart, fool."
 ]
 
 
@@ -28,10 +30,12 @@ var display = ""
 var current_char = 0
 var typing = false
 
-@export var lvl_1_countdown_time: int = 120 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 240 # Set initial countdown time (in seconds)
-@export var lvl_3_countdown_time: int = 360 # Set initial countdown time (in seconds)
-@export var lvl_4_countdown_time: int = 480 # Set initial countdown time (in seconds)
+@onready var Content = $Label
+
+@export var lvl_1_countdown_time: int = 5 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 90 # Set initial countdown time (in seconds)
+@export var lvl_3_countdown_time: int = 120 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 180 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
 # Called when the node enters the scene tree for the first time.
@@ -52,14 +56,18 @@ func _process(delta):
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
+			typing = false
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
 			typing = false
+			if current_message == 2:
+				set_level_timer()
+				$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 	
 	if time_left < 30:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red
 	else:
-		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to red
+		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 
 
 func start_dialogue():
@@ -72,8 +80,7 @@ func start_dialogue():
 func _on_next_char_timeout():
 	if (current_char < len(messages[current_message])):
 		var next_char = messages[current_message][current_char]
-		display += next_char
-		
+		display += next_char		
 		$Label.text = display
 		current_char += 1
 	else:
@@ -93,7 +100,9 @@ func _on_timer_timeout():
 
 
 func set_level_timer():
-	if current_level == 2:
+	if current_level == 1:
+		time_left = lvl_1_countdown_time
+	elif current_level == 2:
 		time_left = lvl_2_countdown_time
 	elif current_level == 3:
 		time_left = lvl_3_countdown_time
