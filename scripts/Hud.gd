@@ -28,10 +28,19 @@ var display = ""
 var current_char = 0
 var typing = false
 
+@export var lvl_1_countdown_time: int = 120 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 240 # Set initial countdown time (in seconds)
+@export var lvl_3_countdown_time: int = 360 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 480 # Set initial countdown time (in seconds)
+var time_left: int
+var current_level = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_message = 0
 	start_dialogue()
+	time_left = lvl_1_countdown_time
+	$Timer.start(1.0) # Start the timer, trigger every 1 second
+	update_timer_label()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,7 +55,11 @@ func _process(delta):
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
 			typing = false
-			
+	
+	if time_left < 30:
+		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red
+	else:
+		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to red
 
 
 func start_dialogue():
@@ -66,3 +79,26 @@ func _on_next_char_timeout():
 	else:
 		$next_char.stop()
 
+
+# Update the label with the time left
+func update_timer_label():
+	$RoundTimerLabel.text = "Time Left: %d" % time_left
+
+func _on_timer_timeout():
+	if time_left > 0:
+		time_left -= 1
+		update_timer_label()
+	else:
+		$Timer.stop()
+
+
+func set_level_timer():
+	if current_level == 2:
+		time_left = lvl_2_countdown_time
+	elif current_level == 3:
+		time_left = lvl_3_countdown_time
+	elif current_level == 4:
+		time_left = lvl_4_countdown_time
+		
+	$Timer.start(1.0) # Start the timer, trigger every 1 second
+	update_timer_label()

@@ -17,6 +17,8 @@ func Resume():
 func Change(song):
 	if song == 1:
 		musicStream = preload("res://assets/music/HorrorGameMusic/Track1_Eerie Silence.wav")
+	elif song == 2:
+		musicStream = preload("res://assets/music/HorrorGameMusic/Track6(Bonus)_Suspenseful Solitude.wav")
 	$AudioStreamPlayer2D.stream = musicStream
 	$AudioStreamPlayer2D.autoplay = true
 	$AudioStreamPlayer2D.play()

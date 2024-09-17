@@ -245,17 +245,27 @@ func handle_tower_interaction():
 
 	
 func upgrade_tower():
-	can_upgrade_tower = false
-	Hud.TowerUpgradeLabel.visible = false	
-	node1 = tower_in_sight	
-	var transform = tower_in_sight.global_transform
-	tower_in_sight.get_owner().queue_free()
-	var new_node = load("res://scenes/fire_tower_2.tscn").instantiate()	
-	node2 = new_node	
-	new_node.global_transform = transform
-	get_parent().add_child(new_node)
-	tower_in_sight = new_node
-	advance_level()
+	if Hud.current_level < 4:
+		Hud.TowerUpgradeLabel.visible = false	
+		node1 = tower_in_sight	
+		var transform = tower_in_sight.global_transform
+		tower_in_sight.get_owner().queue_free()
+		var path = "res://scenes/fire_tower_" + str(Hud.current_level + 1) + ".tscn"
+		var new_node = load(path).instantiate()	
+		node2 = new_node	
+		new_node.global_transform = transform
+		get_parent().add_child(new_node)
+		tower_in_sight = new_node
+		target_node = new_node
+		target_node.scale = Vector3(Hud.current_level / 10 + 1, Hud.current_level / 10 + 1, Hud.current_level / 10 + 1)
+		advance_level()
+	elif Hud.current_level == 4:
+		$Music.Change(2)
+		Hud.TowerUpgradeLabel.visible = false
+		Hud.current_level += 1
+		condition_met = false
+		can_upgrade_tower = false
+		target_node.scale = Vector3(2, 2, 2)
 
 
 func advance_level():
@@ -266,6 +276,8 @@ func advance_level():
 	condition_met = false
 	can_upgrade_tower = false
 	Hud.TowerUpgradeLabel.visible = false
+	Hud.current_level += 1
+	Hud.set_level_timer()
 
 # Nodes that will alternate
 @export var node1: Node
