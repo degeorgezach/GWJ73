@@ -41,7 +41,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var world = self.get_owner()
 	target_node = world.get_node("Tower")
 	original_position = Hud.Content.position
@@ -104,7 +105,8 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _unhandled_input(event):
+func _unhandled_input(event):	
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	# Move camera with mouse
 	if !is_camera_locked and event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * sensitivity)
@@ -182,6 +184,8 @@ func _input(event):
 		collect_stone()
 	elif event.is_action_pressed("action") and can_upgrade_tower and condition_met and !Hud.typing:
 		upgrade_tower()
+		
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func collect_wood():
 	if tree_in_sight.is_in_group("mid"):
