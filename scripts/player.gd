@@ -259,6 +259,9 @@ func upgrade_tower():
 		Hud.TimberLabel.visible = false
 		Hud.StoneLabel.visible = false
 		Hud.RoundTimerLabel.visible = false
+		Hud.RoundTimer.paused = true
+		Hud.current_message = 3
+		Hud.start_dialogue()
 
 
 func advance_level():
@@ -278,8 +281,7 @@ func advance_level():
 var original_position: Vector2
 
 func something_bad_happens(delta):
-	Hud.current_message = 2
-	
+	Hud.current_message = 2	
 	# things under this IF will happen one time, the rest of this method will happen on process()
 	if Hud.typing == false and !something_bad_happening:
 		if condition_met:

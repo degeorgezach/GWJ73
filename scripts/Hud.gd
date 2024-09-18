@@ -6,6 +6,7 @@ extends Node2D
 @onready var TimberLabel = $TimberLabel
 @onready var StoneLabel = $StoneLabel
 @onready var RoundTimerLabel = $RoundTimerLabel
+@onready var RoundTimer = $Timer
 
 
 var messages = [ "A mysterious and sentient tower has appeared from the shadows, looming ominously over the land. This enigmatic structure demands upgrades to unlock its true power. 
@@ -20,7 +21,7 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 Restart, fool.",
 	
-"You son of a bitch, you did it."
+"The tower is fully upgraded."
 ]
 
 
@@ -77,6 +78,11 @@ func _process(delta):
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red
 	else:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
+		
+	if current_message == 1 and $Label.text != "":
+		$Timer.paused = true
+	else:
+		$Timer.paused = false
 
 
 func start_dialogue():
