@@ -3,6 +3,9 @@ extends Node2D
 @onready var TimberCollectLabel = $TimberCollectLabel
 @onready var StoneCollectLabel = $StoneCollectLabel
 @onready var TowerUpgradeLabel = $TowerUpgradeLabel
+@onready var TimberLabel = $TimberLabel
+@onready var StoneLabel = $StoneLabel
+@onready var RoundTimerLabel = $RoundTimerLabel
 
 
 var messages = [ "A mysterious and sentient tower has appeared from the shadows, looming ominously over the land. This enigmatic structure demands upgrades to unlock its true power. 
@@ -13,14 +16,18 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 	
 	You must return to the tower.",
 	
-"You're out of time! Now we both suffer… unless you do better. Restart, fool."
+"You're out of time! Now we both suffer… unless you do better. 
+
+Restart, fool.",
+	
+"You son of a bitch, you did it."
 ]
 
 
 var wood_current = 0 
-var wood_needed = 3
+var wood_needed = 1
 var stone_current = 0 
-var stone_needed = 2
+var stone_needed = 1
 
 var typing_speed = .055
 var read_time = 20
@@ -32,12 +39,14 @@ var typing = false
 
 @onready var Content = $Label
 
-@export var lvl_1_countdown_time: int = 5 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 90 # Set initial countdown time (in seconds)
+@export var lvl_1_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 30 # Set initial countdown time (in seconds)
 @export var lvl_3_countdown_time: int = 120 # Set initial countdown time (in seconds)
 @export var lvl_4_countdown_time: int = 180 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	current_message = 0
@@ -62,7 +71,7 @@ func _process(delta):
 			typing = false
 			if current_message == 2:
 				set_level_timer()
-				$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
+				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 	
 	if time_left < 30:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red

@@ -46,6 +46,6 @@ target_position = Vector3(0, 0, -2)
 
 [node name="RayCast3DTower" type="RayCast3D" parent="Camera3D"]
 transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0.00081116, 0.102631, -0.630777)
-target_position = Vector3(0, 0, -55)
+target_position = Vector3(0, 0, -100)
 
 [node name="Music" parent="." instance=ExtResource("3_bserm")]

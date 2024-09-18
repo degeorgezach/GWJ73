@@ -44,7 +44,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var world = self.get_owner()
 	target_node = world.get_node("Tower")
-
+	original_position = Hud.Content.position
 	current_fov = target_fov
 	set_camera_perspective(current_fov)
 
@@ -81,6 +81,8 @@ func _process(delta):
 		
 	if Hud.time_left <= 0:
 		something_bad_happens(delta)
+	else:
+		something_bad_happening = false
 
 
 func _physics_process(delta):
@@ -133,7 +135,6 @@ func handle_tree_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
-		#print("Colliding with: ", collider)
 		# Check if the collider is a tree (you can tag the tree with a group, like "tree")
 		if collider != null and collider.is_in_group("trees"):
 			# Player is close and looking at a tree
@@ -156,7 +157,6 @@ func handle_stone_interaction():
 	# Check if the raycast is colliding
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
-		#print("Colliding with: ", collider)
 		# Check if the collider is a stone
 		if collider != null and collider.is_in_group("stones"):
 			# Player is close and looking at a tree
@@ -180,7 +180,7 @@ func _input(event):
 		collect_wood()
 	elif event.is_action_pressed("action") and can_collect_stone:
 		collect_stone()
-	elif event.is_action_pressed("action") and can_upgrade_tower and condition_met:
+	elif event.is_action_pressed("action") and can_upgrade_tower and condition_met and !Hud.typing:
 		upgrade_tower()
 
 func collect_wood():
@@ -217,19 +217,15 @@ func handle_tower_interaction():
 	# Check if the raycast_tower is colliding
 	if raycast_tower.is_colliding():
 		var collider = raycast_tower.get_collider()
-		print("Colliding with: ", collider)
-		# Check if the collider is a tree (you can tag the tree with a group, like "tree")
 		if collider != null and collider.is_in_group("towers") and condition_met:
-			# Player is close and looking at a tree
 			Hud.TowerUpgradeLabel.visible = true
 			tower_in_sight = collider
 			can_upgrade_tower = true
 		else:
-			# Not looking at a tree
 			Hud.TowerUpgradeLabel.visible = false
 			tower_in_sight = null
 			can_upgrade_tower = false
-	else:		
+	else:
 		Hud.TowerUpgradeLabel.visible = false
 		tower_in_sight = null
 		can_upgrade_tower = false
@@ -248,12 +244,21 @@ func upgrade_tower():
 		target_node = new_node
 		advance_level()
 	elif Hud.current_level == 4:
-		$Music.Change(2)
+		$Music.Change(6)
 		Hud.TowerUpgradeLabel.visible = false
 		Hud.current_level += 1
 		condition_met = false
 		can_upgrade_tower = false
 		target_node.scale = Vector3(2, 2, 2)
+		Hud.wood_current = 0
+		Hud.stone_current = 0
+		Hud.wood_needed = 100
+		Hud.stone_needed = 100
+		Hud.TimberCollectLabel.visible = false
+		Hud.StoneCollectLabel.visible = false
+		Hud.TimberLabel.visible = false
+		Hud.StoneLabel.visible = false
+		Hud.RoundTimerLabel.visible = false
 
 
 func advance_level():
@@ -274,15 +279,21 @@ var original_position: Vector2
 
 func something_bad_happens(delta):
 	Hud.current_message = 2
+	
+	# things under this IF will happen one time, the rest of this method will happen on process()
 	if Hud.typing == false and !something_bad_happening:
+		if condition_met:
+			condition_met = false
+		$Music.Change(3)
 		something_bad_happening = true
 		Hud.start_dialogue()
+		Hud.wood_current = 0
+		Hud.stone_current = 0
 	look_at_target()
 	current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)	
 	set_camera_perspective(current_fov)
 	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
 	# Create a frantic vibration effect by randomly offsetting the label's position    
-	original_position = Hud.Content.position
 	var random_x = randf_range(-vibration_intensity, vibration_intensity)
 	var random_y = randf_range(-vibration_intensity, vibration_intensity)
 	Hud.Content.position = original_position + Vector2(random_x, random_y)
