@@ -15,10 +15,10 @@ offset_bottom = 3634.0
 color = Color(0, 0, 0, 0.376471)
 
 [node name="Label" type="Label" parent="."]
-offset_left = 845.0
-offset_top = 334.0
-offset_right = 1028.0
-offset_bottom = 379.0
+offset_left = 863.0
+offset_top = 340.0
+offset_right = 1046.0
+offset_bottom = 385.0
 theme_override_fonts/font = ExtResource("1_3haho")
 theme_override_font_sizes/font_size = 48
 text = "Paused"

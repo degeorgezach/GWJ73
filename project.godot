@@ -20,10 +20,14 @@ config/icon="res://icon.svg"
 Hud="*res://scenes/Hud.tscn"
 Text="*res://scenes/Text.tscn"
 Pause="*res://scenes/pause.tscn"
+Ending="*res://scenes/ending.tscn"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1200
 window/size/mode=3
+window/stretch/mode="canvas_items"
 
 [input]
 

@@ -1,0 +1,69 @@
+[gd_scene load_steps=3 format=3 uid="uid://cc4u8w1xwkhgk"]
+
+[ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_knh3t"]
+[ext_resource type="Script" path="res://scripts/ending.gd" id="1_vno6n"]
+
+[node name="Ending" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_vno6n")
+
+[node name="ButtonSubmit" type="Button" parent="."]
+offset_left = -320.0
+offset_top = 66.0
+offset_right = -312.0
+offset_bottom = 74.0
+
+[node name="Label" type="Label" parent="ButtonSubmit"]
+layout_mode = 0
+offset_left = 625.0
+offset_top = 351.0
+offset_right = 2024.0
+offset_bottom = 497.0
+theme_override_fonts/font = ExtResource("1_knh3t")
+theme_override_font_sizes/font_size = 32
+text = "Submit to the Tower: 
+
+Surrender to the tower's dark power, becoming a slave to its will, forever trapped in shadow."
+autowrap_mode = 2
+
+[node name="ButtonDeny" type="Button" parent="."]
+offset_left = -320.0
+offset_top = 66.0
+offset_right = -312.0
+offset_bottom = 74.0
+
+[node name="Label" type="Label" parent="ButtonDeny"]
+layout_mode = 0
+offset_left = 625.0
+offset_top = 589.0
+offset_right = 2024.0
+offset_bottom = 735.0
+theme_override_fonts/font = ExtResource("1_knh3t")
+theme_override_font_sizes/font_size = 32
+text = "Deny the Tower: 
+
+Reject the tower’s insidious call, and face a consequence shrouded in dark uncertainty."
+autowrap_mode = 2
+
+[node name="ButtonDestroy" type="Button" parent="."]
+offset_left = -320.0
+offset_top = 279.0
+offset_right = -312.0
+offset_bottom = 287.0
+
+[node name="Label" type="Label" parent="ButtonDestroy"]
+layout_mode = 0
+offset_left = 625.0
+offset_top = 614.0
+offset_right = 2024.0
+offset_bottom = 760.0
+theme_override_fonts/font = ExtResource("1_knh3t")
+theme_override_font_sizes/font_size = 32
+text = "Destroy the Tower: 
+
+YouAttempt to gather materials to block its gaze, shattering its influence and restoring peace to the land."
+autowrap_mode = 2
+
+[connection signal="pressed" from="ButtonSubmit" to="." method="_on_button_submit_pressed"]
+[connection signal="pressed" from="ButtonDeny" to="." method="_on_button_deny_pressed"]
+[connection signal="pressed" from="ButtonDestroy" to="." method="_on_button_destroy_pressed"]

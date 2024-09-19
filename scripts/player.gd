@@ -77,8 +77,7 @@ func _process(delta):
 	# Apply the new FOV
 	set_camera_perspective(current_fov)
 	
-	if Input.is_action_just_pressed("escape"):
-		#get_tree().quit()
+	if Input.is_action_just_pressed("escape") and Ending.visible == false:
 		if Pause.visible:
 			Pause.visible = false
 		else:
@@ -93,7 +92,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	if Pause.visible == false:
+	if Pause.visible == false and Ending.visible == false:
 		# Add the gravity.
 		if not is_on_floor():
 			velocity.y -= gravity * delta

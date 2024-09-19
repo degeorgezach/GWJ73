@@ -21,7 +21,13 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 Restart, fool.",
 	
-"The tower is fully upgraded."
+"The tower is fully upgraded.",
+	
+"You have chosen to submit.", #4
+	
+"You have chosen to reject.", #5
+	
+"You have chosen to destroy." #6
 ]
 
 
@@ -62,7 +68,7 @@ func _process(delta):
 	$TimberLabel.text = "Timber: " + str(wood_current) + " / " + str(wood_needed)
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
-	if Input.is_action_just_pressed("action") and Pause.visible == false:
+	if Input.is_action_just_pressed("action") and Pause.visible == false and Ending.visible == false:
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
@@ -73,6 +79,8 @@ func _process(delta):
 			if current_message == 2:
 				set_level_timer()
 				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
+			elif current_message == 3:
+				Ending.visible = true
 	
 	if time_left < 30:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red
