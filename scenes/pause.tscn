@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2ec2yltxs70p"]
+
+[ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_3haho"]
+[ext_resource type="Script" path="res://scripts/pause.gd" id="1_xfcc8"]
+
+[node name="Pause" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_xfcc8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -2574.0
+offset_top = -1492.0
+offset_right = 4870.0
+offset_bottom = 3634.0
+color = Color(0, 0, 0, 0.376471)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 845.0
+offset_top = 334.0
+offset_right = 1028.0
+offset_bottom = 379.0
+theme_override_fonts/font = ExtResource("1_3haho")
+theme_override_font_sizes/font_size = 48
+text = "Paused"
+
+[node name="ButtonResume" type="Button" parent="."]
+offset_left = -279.0
+offset_top = 126.0
+offset_right = -271.0
+offset_bottom = 134.0
+
+[node name="LabelResume" type="Label" parent="ButtonResume"]
+offset_left = 1163.0
+offset_top = 384.0
+offset_right = 1385.0
+offset_bottom = 414.0
+theme_override_fonts/font = ExtResource("1_3haho")
+theme_override_font_sizes/font_size = 32
+text = "Resume
+"
+
+[node name="ButtonQuit" type="Button" parent="."]
+offset_left = -217.0
+offset_top = 125.0
+offset_right = -209.0
+offset_bottom = 133.0
+
+[node name="LabelQuit" type="Label" parent="ButtonQuit"]
+offset_left = 1125.0
+offset_top = 458.0
+offset_right = 1247.0
+offset_bottom = 488.0
+theme_override_fonts/font = ExtResource("1_3haho")
+theme_override_font_sizes/font_size = 32
+text = "Quit"
+
+[connection signal="pressed" from="ButtonResume" to="." method="_on_button_resume_pressed"]
+[connection signal="pressed" from="ButtonQuit" to="." method="_on_button_quit_pressed"]

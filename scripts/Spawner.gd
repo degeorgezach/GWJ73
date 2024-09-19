@@ -11,7 +11,7 @@ extends Node3D
 	]
 
 @export var ground_size: Vector2 = Vector2(750, 750) # Size of your ground area
-@export var density: int = 1500 # Number of scenes to place
+@export var density: int = 2500 # Number of scenes to place
 
 func _ready():
 	randomize()  # Initialize random number generator

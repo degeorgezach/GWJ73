@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://tuerfpan86jg"]
+[gd_scene load_steps=10 format=3 uid="uid://tuerfpan86jg"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_v6spb"]
 [ext_resource type="Shader" path="res://scripts/player.gdshader" id="2_rlfmy"]
 [ext_resource type="PackedScene" uid="uid://bxa8brcsksfxg" path="res://scenes/music.tscn" id="3_bserm"]
+[ext_resource type="PackedScene" uid="uid://cukkphw2jaxn0" path="res://scenes/sfx.tscn" id="4_polxd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_squcg"]
 radius = 0.4
@@ -46,6 +47,8 @@ target_position = Vector3(0, 0, -2)
 
 [node name="RayCast3DTower" type="RayCast3D" parent="Camera3D"]
 transform = Transform3D(1.25, 0, 0, 0, 1.25, 0, 0, 0, 1.25, 0.00081116, 0.102631, -0.630777)
-target_position = Vector3(0, 0, -100)
+target_position = Vector3(0, 0, -1000)
 
 [node name="Music" parent="." instance=ExtResource("3_bserm")]
+
+[node name="Sfx" parent="." instance=ExtResource("4_polxd")]

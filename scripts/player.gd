@@ -78,31 +78,38 @@ func _process(delta):
 	set_camera_perspective(current_fov)
 	
 	if Input.is_action_just_pressed("escape"):
-		get_tree().quit()
+		#get_tree().quit()
+		if Pause.visible:
+			Pause.visible = false
+		else:
+			Pause.visible = true
+			Pause.focus_button(0)
 		
 	if Hud.time_left <= 0:
 		something_bad_happens(delta)
 	else:
 		something_bad_happening = false
+		
 
 
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	# Get the input direction and handle the movement/deceleration.
-	var input_dir = Input.get_vector("left", "right", "up", "down")
-	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-	move_and_slide()
+	if Pause.visible == false:
+		# Add the gravity.
+		if not is_on_floor():
+			velocity.y -= gravity * delta
+		# Handle jump.
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+		# Get the input direction and handle the movement/deceleration.
+		var input_dir = Input.get_vector("left", "right", "up", "down")
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+			velocity.z = move_toward(velocity.z, 0, SPEED)
+		move_and_slide()
 
 
 func _unhandled_input(event):	
@@ -196,6 +203,7 @@ func collect_wood():
 	tree.queue_free()
 	Hud.TimberCollectLabel.visible = false
 	can_collect_wood = false
+	$Sfx.play(0)
 	
 		
 func collect_stone():
@@ -207,6 +215,7 @@ func collect_stone():
 	stone.queue_free()
 	Hud.StoneCollectLabel.visible = false
 	can_collect_stone = false
+	$Sfx.play(1)
 
 
 func look_at_target():

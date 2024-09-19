@@ -40,10 +40,10 @@ var typing = false
 
 @onready var Content = $Label
 
-@export var lvl_1_countdown_time: int = 30 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_1_countdown_time: int = 60 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 90 # Set initial countdown time (in seconds)
 @export var lvl_3_countdown_time: int = 120 # Set initial countdown time (in seconds)
-@export var lvl_4_countdown_time: int = 180 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 30 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
 
@@ -62,7 +62,7 @@ func _process(delta):
 	$TimberLabel.text = "Timber: " + str(wood_current) + " / " + str(wood_needed)
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
-	if Input.is_action_just_pressed("action"):
+	if Input.is_action_just_pressed("action") and Pause.visible == false:
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
@@ -83,6 +83,14 @@ func _process(delta):
 		$Timer.paused = true
 	else:
 		$Timer.paused = false
+		
+	if Pause.visible:
+		$Timer.paused = true
+	else:
+		$Timer.paused = false
+		
+	if current_level >= 5:
+		$Timer.paused = true
 
 
 func start_dialogue():

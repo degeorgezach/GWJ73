@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://d1qhwo8mdnvh0"]
+[gd_scene load_steps=12 format=3 uid="uid://d1qhwo8mdnvh0"]
 
 [ext_resource type="PackedScene" uid="uid://tuerfpan86jg" path="res://scenes/player.tscn" id="1_jxmis"]
 [ext_resource type="PackedScene" uid="uid://bhjiuruu6008y" path="res://scenes/plateau_5.tscn" id="4_2ddko"]
+[ext_resource type="Script" path="res://scripts/MountainSpawner.gd" id="5_0yedy"]
 [ext_resource type="PackedScene" uid="uid://dnpkpex10gxcg" path="res://scenes/fire_tower_1.tscn" id="8_gan75"]
 [ext_resource type="Script" path="res://scripts/Spawner.gd" id="10_mrcv3"]
 
@@ -56,5 +57,37 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -360.78, 0, -488.498)
 script = ExtResource("10_mrcv3")
 
 [node name="TowerUpgradeTimer" type="Timer" parent="."]
+
+[node name="MountainSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 192.176, 0, 197.948)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -424.63, 0, 197.948)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -914.209, 0, -18.8591)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -914.209, 0, -576.606)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner5" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326.283, 0, -755.534)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner6" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 229.819, 0, -755.534)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner7" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 323.298, 0, -392.47)
+script = ExtResource("5_0yedy")
+
+[node name="MountainSpawner8" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 323.298, 0, 112.49)
+script = ExtResource("5_0yedy")
 
 [connection signal="timeout" from="TowerUpgradeTimer" to="Player" method="_on_tower_upgrade_timer_timeout"]
