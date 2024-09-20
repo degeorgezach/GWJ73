@@ -28,6 +28,7 @@ var can_upgrade_tower: bool = false
 
 var condition_met = false  # Placeholder for your condition logic
 var something_bad_happening = false
+var loss_counter = 0
 
 var target_fov = 60.0  # Default field of view for your camera
 var zoomed_in_fov = 35.0  # Desired FOV when zoomed in
@@ -85,7 +86,7 @@ func _process(delta):
 			Pause.focus_button(0)
 		
 	if Hud.time_left <= 0:
-		something_bad_happens(delta)
+		something_bad_happens(delta, 2)
 	else:
 		something_bad_happening = false
 		
@@ -277,6 +278,7 @@ func upgrade_tower():
 
 
 func advance_level():
+	loss_counter = 0
 	Hud.wood_current = Hud.wood_current - Hud.wood_needed
 	Hud.stone_current = Hud.stone_current - Hud.stone_needed	
 	Hud.wood_needed = ceil(Hud.wood_needed * 1.5)
@@ -292,14 +294,19 @@ func advance_level():
 @export var vibration_speed: float = 0.1  # Speed of vibration
 var original_position: Vector2
 
-func something_bad_happens(delta):
-	Hud.current_message = 2	
+func something_bad_happens(delta, message):
+	Hud.current_message = message
 	# things under this IF will happen one time, the rest of this method will happen on process()
 	if Hud.typing == false and !something_bad_happening:
 		if condition_met:
 			condition_met = false
 		$Music.Change(3)
 		something_bad_happening = true
+		loss_counter += 1
+		
+		if loss_counter >= 2:
+			pass # game over
+			
 		Hud.start_dialogue()
 		Hud.wood_current = 0
 		Hud.stone_current = 0

@@ -1,9 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc4u8w1xwkhgk"]
+[gd_scene load_steps=5 format=3 uid="uid://cc4u8w1xwkhgk"]
 
 [ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_knh3t"]
 [ext_resource type="Script" path="res://scripts/ending.gd" id="1_vno6n"]
 
+[sub_resource type="Animation" id="Animation_fujth"]
+resource_name = "fade"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_20xmm"]
+_data = {
+"fade": SubResource("Animation_fujth")
+}
+
 [node name="Ending" type="CanvasLayer"]
+layer = -10
 visible = false
 script = ExtResource("1_vno6n")
 
@@ -64,6 +86,26 @@ text = "Destroy the Tower:
 YouAttempt to gather materials to block its gaze, shattering its influence and restoring peace to the land."
 autowrap_mode = 2
 
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="Timer2" type="Timer" parent="."]
+
+[node name="Fade" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -1396.0
+offset_top = -776.0
+offset_right = 3291.0
+offset_bottom = 1766.0
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fade"]
+libraries = {
+"": SubResource("AnimationLibrary_20xmm")
+}
+
 [connection signal="pressed" from="ButtonSubmit" to="." method="_on_button_submit_pressed"]
 [connection signal="pressed" from="ButtonDeny" to="." method="_on_button_deny_pressed"]
 [connection signal="pressed" from="ButtonDestroy" to="." method="_on_button_destroy_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

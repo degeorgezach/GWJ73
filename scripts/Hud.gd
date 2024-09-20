@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 @onready var TimberCollectLabel = $TimberCollectLabel
 @onready var StoneCollectLabel = $StoneCollectLabel
@@ -7,6 +7,8 @@ extends Node2D
 @onready var StoneLabel = $StoneLabel
 @onready var RoundTimerLabel = $RoundTimerLabel
 @onready var RoundTimer = $Timer
+
+var loss_count = 0
 
 
 var messages = [ "A mysterious and sentient tower has appeared from the shadows, looming ominously over the land. This enigmatic structure demands upgrades to unlock its true power. 
@@ -46,10 +48,10 @@ var typing = false
 
 @onready var Content = $Label
 
-@export var lvl_1_countdown_time: int = 60 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 90 # Set initial countdown time (in seconds)
-@export var lvl_3_countdown_time: int = 120 # Set initial countdown time (in seconds)
-@export var lvl_4_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_1_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 20 # Set initial countdown time (in seconds)
+@export var lvl_3_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 40 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
 
@@ -76,10 +78,10 @@ func _process(delta):
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
 			typing = false
-			if current_message == 2:
+			if current_message == 2:				
 				set_level_timer()
 				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
-			elif current_message == 3:
+			elif current_message == 3 and Ending.visible == false:
 				Ending.visible = true
 	
 	if time_left < 30:
@@ -87,12 +89,7 @@ func _process(delta):
 	else:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 		
-	if current_message == 1 and $Label.text != "":
-		$Timer.paused = true
-	else:
-		$Timer.paused = false
-		
-	if Pause.visible:
+	if (current_message == 1 and $Label.text != "") or  Pause.visible:
 		$Timer.paused = true
 	else:
 		$Timer.paused = false

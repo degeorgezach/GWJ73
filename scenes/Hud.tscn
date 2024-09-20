@@ -3,7 +3,8 @@
 [ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_1djd5"]
 [ext_resource type="Script" path="res://scripts/Hud.gd" id="1_c81eo"]
 
-[node name="Hud" type="Node2D"]
+[node name="Hud" type="CanvasLayer"]
+layer = 10
 script = ExtResource("1_c81eo")
 
 [node name="TimberLabel" type="Label" parent="."]
@@ -63,6 +64,7 @@ theme_override_font_sizes/font_size = 32
 text = "Upgrade Tower ( E )"
 
 [node name="Label" type="Label" parent="."]
+z_index = 9
 offset_left = 304.0
 offset_top = 800.0
 offset_right = 1584.0

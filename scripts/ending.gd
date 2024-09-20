@@ -4,6 +4,9 @@ extends CanvasLayer
 var normal_color = Color(1, 1, 1)  # Default white color
 var focus_color = Color(0, 1, 0)   # Green color for focused button
 
+@onready var FocusTimer = $Timer
+var can_click = false
+
 # Reference to buttons
 @onready var buttons = [
 	$ButtonSubmit,
@@ -13,6 +16,9 @@ var focus_color = Color(0, 1, 0)   # Green color for focused button
 
 # Keep track of which button is focused
 var focused_button_index = 0
+
+var buttons_refresh = false
+var submit_pressed = false
 
 # Variables to control joystick input speed
 var debounce_time = 0.2  # Time in seconds between joystick inputs
@@ -33,13 +39,29 @@ func _process(delta):
 	# Handle joystick navigation with debouncing
 	handle_joystick_input()
 	
-	if Input.is_action_just_pressed("action") and Ending.visible == true:
-		if $ButtonSubmit.has_focus():
+	if visible and buttons_refresh == false:
+		focused_button_index = 0
+		focus_button(0)
+		buttons_refresh = true
+		$Timer2.start()
+	
+	
+	if Input.is_action_just_pressed("action") and Ending.visible == true and can_click:
+		if focused_button_index == 0:
 			_on_button_submit_pressed()
-		elif $ButtonDeny.has_focus():
+		elif focused_button_index == 1:
 			_on_button_deny_pressed()
-		elif $ButtonDestroy.has_focus():
+		elif focused_button_index == 2:
 			_on_button_destroy_pressed()
+			
+	if submit_pressed:
+		# Create a frantic vibration effect by randomly offsetting the label's position    
+		var random_x = randf_range(-vibration_intensity, vibration_intensity)
+		var random_y = randf_range(-vibration_intensity, vibration_intensity)
+		Hud.Content.position = original_position + Vector2(random_x, random_y)
+		# the world get's darker. 
+		# some text on the screen says you continue to live but it's miserable. 
+		
 
 func _input(event):
 	# Handle keyboard input as before
@@ -79,23 +101,49 @@ func focus_button(index):
 		else:
 			buttons[i].get_child(0).modulate = normal_color  # Reset other buttons to normal color
 
+@export var vibration_intensity: float = 5.0  # Intensity of the vibration
+@export var vibration_speed: float = 0.1  # Speed of vibration
+var original_position
 
 func _on_button_submit_pressed():
-	Ending.visible = false
+	original_position = Hud.Content.position
+	$ButtonSubmit.visible = false
+	$ButtonDeny.visible = false
+	$ButtonDestroy.visible = false
 	Hud.current_message = 4
 	Hud.typing = true
 	Hud.start_dialogue()
 
+	Hud.wood_current = 0
+	Hud.stone_current = 0
+	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
+	submit_pressed = true
+	$Fade/AnimationPlayer.play("fade")
+
+
 
 func _on_button_deny_pressed():
-	Ending.visible = false
+	self.visible = false
 	Hud.current_message = 5
 	Hud.typing = true
 	Hud.start_dialogue()
+	# the world fades to black
+	# you are immedietly killed by the tower
 
 
 func _on_button_destroy_pressed():
-	Ending.visible = false
+	self.visible = false
 	Hud.current_message = 6
 	Hud.typing = true
 	Hud.start_dialogue()
+	#bonus level with actual good ending. 
+
+
+func _on_timer_timeout():
+	$Timer.stop()
+	$Timer2.start()
+
+
+func _on_timer_2_timeout():
+	$Timer2.stop()
+	can_click = true
