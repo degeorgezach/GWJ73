@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvck8dr31oifl"]
+
+[ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="2_cf7hl"]
+
+[node name="Loading" type="CanvasLayer"]
+layer = 11
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -2574.0
+offset_top = -1492.0
+offset_right = 4870.0
+offset_bottom = 3634.0
+color = Color(0, 0, 0, 0.376471)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 813.0
+offset_top = 484.0
+offset_right = 1128.0
+offset_bottom = 529.0
+theme_override_fonts/font = ExtResource("2_cf7hl")
+theme_override_font_sizes/font_size = 48
+text = "Loading . . . "

@@ -25,11 +25,17 @@ Restart, fool.",
 	
 "The tower is fully upgraded.",
 	
-"You have chosen to submit.", #4
+"You have chosen to submit.
+
+You have been graced with the opprotunity to keep your life, but you will be bound in eternal servitude to the evil tower forever.", #4
 	
-"You have chosen to reject.", #5
+"You have chosen to reject.
+
+Since you are no longer of any use to the evil tower, it has chosen to end your life.", #5
 	
-"You have chosen to destroy." #6
+"You have chosen to destroy.", #6,
+	
+"Game Over." # 7
 ]
 
 
@@ -37,6 +43,9 @@ var wood_current = 0
 var wood_needed = 1
 var stone_current = 0 
 var stone_needed = 1
+
+var initial_wood_needed = 1
+var initial_stone_needed = 1
 
 var typing_speed = .055
 var read_time = 20
@@ -58,23 +67,43 @@ var current_level = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	pass
+
+
+func Begin():
+	wood_current = 23
+	stone_current = 15
+	self.visible = true
 	current_message = 0
 	start_dialogue()
 	time_left = lvl_1_countdown_time
-	$Timer.start(1.0) # Start the timer, trigger every 1 second
+	current_level = 1
+	set_level_timer()
 	update_timer_label()
-
+	TimberCollectLabel.visible = true
+	StoneCollectLabel.visible = true
+	TimberLabel.visible = true
+	StoneLabel.visible = true
+	RoundTimerLabel.visible = true
+	RoundTimer.paused = false
+	wood_needed = initial_wood_needed
+	stone_needed = initial_stone_needed
+	$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	$TimberLabel.text = "Timber: " + str(wood_current) + " / " + str(wood_needed)
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
-	if Input.is_action_just_pressed("action") and Pause.visible == false and Ending.visible == false:
+	if Input.is_action_just_pressed("action") and Pause.visible == false and (Ending.visible == false or Ending.submit_pressed or Ending.deny_pressed):
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
 			typing = false
+		elif current_message >= 4 and current_message <= 6:
+			current_message = 7
+			start_dialogue()
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
 			typing = false
@@ -83,6 +112,14 @@ func _process(delta):
 				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 			elif current_message == 3 and Ending.visible == false:
 				Ending.visible = true
+				Ending.focused_button_index = 0
+			elif current_message == 7:
+				Ending.visible = false
+				Ending.submit_pressed = false
+				Ending.deny_pressed = false
+				get_tree().change_scene_to_file("res://scenes/start.tscn")
+
+			
 	
 	if time_left < 30:
 		$RoundTimerLabel.add_theme_color_override("font_color", Color(1, 0, 0))  # Set the color to red

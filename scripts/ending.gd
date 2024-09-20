@@ -4,7 +4,11 @@ extends CanvasLayer
 var normal_color = Color(1, 1, 1)  # Default white color
 var focus_color = Color(0, 1, 0)   # Green color for focused button
 
+@onready var ButtonSubmit = $ButtonSubmit
+@onready var ButtonDeny = $ButtonDeny
+@onready var ButtonDestroy = $ButtonDestroy
 @onready var FocusTimer = $Timer
+@onready var AnimPlayer = $Fade/AnimationPlayer
 var can_click = false
 
 # Reference to buttons
@@ -19,6 +23,7 @@ var focused_button_index = 0
 
 var buttons_refresh = false
 var submit_pressed = false
+var deny_pressed = false
 
 # Variables to control joystick input speed
 var debounce_time = 0.2  # Time in seconds between joystick inputs
@@ -54,7 +59,7 @@ func _process(delta):
 		elif focused_button_index == 2:
 			_on_button_destroy_pressed()
 			
-	if submit_pressed:
+	if submit_pressed or deny_pressed:
 		# Create a frantic vibration effect by randomly offsetting the label's position    
 		var random_x = randf_range(-vibration_intensity, vibration_intensity)
 		var random_y = randf_range(-vibration_intensity, vibration_intensity)
@@ -112,23 +117,30 @@ func _on_button_submit_pressed():
 	$ButtonDestroy.visible = false
 	Hud.current_message = 4
 	Hud.typing = true
-	Hud.start_dialogue()
-
+	Hud.start_dialogue()	
 	Hud.wood_current = 0
 	Hud.stone_current = 0
 	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
 	submit_pressed = true
 	$Fade/AnimationPlayer.play("fade")
+	focused_button_index = 999
 
 
 
 func _on_button_deny_pressed():
-	self.visible = false
+	original_position = Hud.Content.position
+	$ButtonSubmit.visible = false
+	$ButtonDeny.visible = false
+	$ButtonDestroy.visible = false
 	Hud.current_message = 5
 	Hud.typing = true
-	Hud.start_dialogue()
-	# the world fades to black
-	# you are immedietly killed by the tower
+	Hud.start_dialogue()	
+	Hud.wood_current = 0
+	Hud.stone_current = 0
+	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
+	deny_pressed = true
+	$Fade/AnimationPlayer.play("fade")
+	focused_button_index = 999
 
 
 func _on_button_destroy_pressed():

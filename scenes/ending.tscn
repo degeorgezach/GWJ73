@@ -29,6 +29,16 @@ layer = -10
 visible = false
 script = ExtResource("1_vno6n")
 
+[node name="Label" type="Label" parent="."]
+offset_left = 305.0
+offset_top = 279.0
+offset_right = 1704.0
+offset_bottom = 425.0
+theme_override_fonts/font = ExtResource("1_knh3t")
+theme_override_font_sizes/font_size = 48
+text = "Now, you must make a choice:"
+autowrap_mode = 2
+
 [node name="ButtonSubmit" type="Button" parent="."]
 offset_left = -320.0
 offset_top = 66.0
@@ -62,9 +72,9 @@ offset_right = 2024.0
 offset_bottom = 735.0
 theme_override_fonts/font = ExtResource("1_knh3t")
 theme_override_font_sizes/font_size = 32
-text = "Deny the Tower: 
+text = "Reject the Tower: 
 
-Reject the tower’s insidious call, and face a consequence shrouded in dark uncertainty."
+Deny the tower’s insidious call, and face a consequence shrouded in dark uncertainty."
 autowrap_mode = 2
 
 [node name="ButtonDestroy" type="Button" parent="."]
@@ -83,7 +93,7 @@ theme_override_fonts/font = ExtResource("1_knh3t")
 theme_override_font_sizes/font_size = 32
 text = "Destroy the Tower: 
 
-YouAttempt to gather materials to block its gaze, shattering its influence and restoring peace to the land."
+Attempt to gather materials to block its gaze, shattering its influence and restoring peace to the land."
 autowrap_mode = 2
 
 [node name="Timer" type="Timer" parent="."]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://d1qhwo8mdnvh0"]
+[gd_scene load_steps=13 format=3 uid="uid://d1qhwo8mdnvh0"]
 
 [ext_resource type="PackedScene" uid="uid://tuerfpan86jg" path="res://scenes/player.tscn" id="1_jxmis"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_q47nk"]
 [ext_resource type="PackedScene" uid="uid://bhjiuruu6008y" path="res://scenes/plateau_5.tscn" id="4_2ddko"]
 [ext_resource type="Script" path="res://scripts/MountainSpawner.gd" id="5_0yedy"]
 [ext_resource type="PackedScene" uid="uid://dnpkpex10gxcg" path="res://scenes/fire_tower_1.tscn" id="8_gan75"]
@@ -29,6 +30,7 @@ orientation = 1
 
 [node name="World" type="WorldEnvironment"]
 environment = SubResource("Environment_b3o0o")
+script = ExtResource("1_q47nk")
 
 [node name="Floor" type="StaticBody3D" parent="."]
 

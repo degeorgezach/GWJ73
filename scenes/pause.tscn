@@ -15,13 +15,13 @@ offset_bottom = 3634.0
 color = Color(0, 0, 0, 0.376471)
 
 [node name="Label" type="Label" parent="."]
-offset_left = 863.0
 offset_top = 340.0
-offset_right = 1046.0
+offset_right = 1920.0
 offset_bottom = 385.0
 theme_override_fonts/font = ExtResource("1_3haho")
 theme_override_font_sizes/font_size = 48
 text = "Paused"
+horizontal_alignment = 1
 
 [node name="ButtonResume" type="Button" parent="."]
 offset_left = -279.0
@@ -30,14 +30,15 @@ offset_right = -271.0
 offset_bottom = 134.0
 
 [node name="LabelResume" type="Label" parent="ButtonResume"]
-offset_left = 1163.0
+offset_left = 279.0
 offset_top = 384.0
-offset_right = 1385.0
+offset_right = 2199.0
 offset_bottom = 414.0
 theme_override_fonts/font = ExtResource("1_3haho")
 theme_override_font_sizes/font_size = 32
 text = "Resume
 "
+horizontal_alignment = 1
 
 [node name="ButtonQuit" type="Button" parent="."]
 offset_left = -217.0
@@ -46,13 +47,14 @@ offset_right = -209.0
 offset_bottom = 133.0
 
 [node name="LabelQuit" type="Label" parent="ButtonQuit"]
-offset_left = 1125.0
+offset_left = 217.0
 offset_top = 458.0
-offset_right = 1247.0
+offset_right = 2137.0
 offset_bottom = 488.0
 theme_override_fonts/font = ExtResource("1_3haho")
 theme_override_font_sizes/font_size = 32
 text = "Quit"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="ButtonResume" to="." method="_on_button_resume_pressed"]
 [connection signal="pressed" from="ButtonQuit" to="." method="_on_button_quit_pressed"]

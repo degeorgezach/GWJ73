@@ -11,16 +11,16 @@ config_version=5
 [application]
 
 config/name="zTower"
-run/main_scene="res://scenes/world.tscn"
+run/main_scene="res://scenes/start.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 Hud="*res://scenes/Hud.tscn"
-Text="*res://scenes/Text.tscn"
 Pause="*res://scenes/pause.tscn"
 Ending="*res://scenes/ending.tscn"
+Loading="*res://scenes/loading.tscn"
 
 [display]
 

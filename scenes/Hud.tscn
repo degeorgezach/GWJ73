@@ -5,6 +5,7 @@
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
+visible = false
 script = ExtResource("1_c81eo")
 
 [node name="TimberLabel" type="Label" parent="."]
