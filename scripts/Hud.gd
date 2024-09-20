@@ -17,7 +17,7 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 "You have gathered the required materials. The tower’s demand is clear: 
 	
-	You must return to the tower.",
+You must return to the tower.",
 	
 "You're out of time! Now we both suffer… unless you do better. 
 
@@ -35,14 +35,16 @@ Since you are no longer of any use to the evil tower, it has chosen to end your 
 	
 "You have chosen to destroy.", #6,
 	
-"Game Over." # 7
+"Game Over.", # 7
+
+"You have completed the bonus level." # 8
 ]
 
 
 var wood_current = 0 
-var wood_needed = 1
+var wood_needed = 4
 var stone_current = 0 
-var stone_needed = 1
+var stone_needed = 3
 
 var initial_wood_needed = 1
 var initial_stone_needed = 1
@@ -58,9 +60,10 @@ var typing = false
 @onready var Content = $Label
 
 @export var lvl_1_countdown_time: int = 30 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 20 # Set initial countdown time (in seconds)
-@export var lvl_3_countdown_time: int = 30 # Set initial countdown time (in seconds)
-@export var lvl_4_countdown_time: int = 40 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 40 # Set initial countdown time (in seconds)
+@export var lvl_3_countdown_time: int = 50 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 60 # Set initial countdown time (in seconds)
+@export var lvl_999_countdown_time: int = 90 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
 
@@ -71,8 +74,8 @@ func _ready():
 
 
 func Begin():
-	wood_current = 23
-	stone_current = 15
+	wood_current = 0
+	stone_current = 0
 	self.visible = true
 	current_message = 0
 	start_dialogue()
@@ -96,18 +99,18 @@ func _process(delta):
 	$TimberLabel.text = "Timber: " + str(wood_current) + " / " + str(wood_needed)
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
-	if Input.is_action_just_pressed("action") and Pause.visible == false and (Ending.visible == false or Ending.submit_pressed or Ending.deny_pressed):
+	if Input.is_action_just_pressed("action") and Pause.visible == false and (Ending.visible == false or (Ending.submit_pressed or Ending.deny_pressed or Ending.destroy_pressed)):
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
 			typing = false
-		elif current_message >= 4 and current_message <= 6:
+		elif current_message >= 4 and current_message <= 5:
 			current_message = 7
 			start_dialogue()
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
 			typing = false
-			if current_message == 2:				
+			if current_message == 2:
 				set_level_timer()
 				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
 			elif current_message == 3 and Ending.visible == false:
@@ -117,8 +120,10 @@ func _process(delta):
 				Ending.visible = false
 				Ending.submit_pressed = false
 				Ending.deny_pressed = false
+				Ending.destroy_pressed = false
 				get_tree().change_scene_to_file("res://scenes/start.tscn")
-
+			elif current_message == 6:
+				current_level = 999
 			
 	
 	if time_left < 30:
@@ -131,7 +136,7 @@ func _process(delta):
 	else:
 		$Timer.paused = false
 		
-	if current_level >= 5:
+	if current_level >= 5 and current_level != 999:
 		$Timer.paused = true
 
 
@@ -173,6 +178,8 @@ func set_level_timer():
 		time_left = lvl_3_countdown_time
 	elif current_level == 4:
 		time_left = lvl_4_countdown_time
+	elif current_level == 999:
+		time_left = lvl_999_countdown_time
 		
 	$Timer.start(1.0) # Start the timer, trigger every 1 second
 	update_timer_label()

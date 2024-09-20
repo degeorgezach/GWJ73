@@ -27,6 +27,7 @@ var can_upgrade_tower: bool = false
 @export var rotate_speed: float = 50.0  # Speed of the camera rotation
 
 var condition_met = false  # Placeholder for your condition logic
+var bonus_level_condition_met = false
 var something_bad_happening = false
 var loss_counter = 0
 
@@ -36,6 +37,8 @@ var zoom_speed = 1.0  # Adjust the speed of zooming
 var current_fov = 60.0  # Keep track of the current FOV
 var near_clip = 0.1  # Near clipping plane
 var far_clip = 1000.0  # Far clipping plane
+
+var bonus_level_started = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -63,12 +66,18 @@ func _process(delta):
 	handle_tower_interaction()
 	
 	if Hud.wood_current >= Hud.wood_needed and Hud.stone_current >= Hud.stone_needed and !condition_met:
-		condition_met = true
-		Hud.current_message = 1
-		Hud.typing = true
-		Hud.start_dialogue()
+		if !bonus_level_started:
+			condition_met = true
+			Hud.current_message = 1
+			Hud.typing = true
+			Hud.start_dialogue()
+		elif !bonus_level_condition_met:
+			bonus_level_condition_met = true
+			Hud.current_message = 8
+			Hud.typing = true
+			Hud.start_dialogue()
 	
-	if condition_met:
+	if condition_met or bonus_level_condition_met:
 		look_at_target()
 		# Smoothly zoom in
 		current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)
@@ -90,6 +99,9 @@ func _process(delta):
 	else:
 		something_bad_happening = false
 		
+	if Hud.current_level == 999 and !bonus_level_started:
+		bonus_level_started = true
+		bonus_level()
 
 
 func _physics_process(delta):
@@ -230,7 +242,7 @@ func handle_tower_interaction():
 	# Check if the raycast_tower is colliding
 	if raycast_tower.is_colliding():
 		var collider = raycast_tower.get_collider()
-		if collider != null and collider.is_in_group("towers") and condition_met:
+		if collider != null and collider.is_in_group("towers") and condition_met and Hud.current_level <= 4:
 			Hud.TowerUpgradeLabel.visible = true
 			tower_in_sight = collider
 			can_upgrade_tower = true
@@ -260,13 +272,13 @@ func upgrade_tower():
 		$Music.Change(6)
 		Hud.TowerUpgradeLabel.visible = false
 		Hud.current_level += 1
-		condition_met = false
+		#condition_met = false
 		can_upgrade_tower = false
 		target_node.scale = Vector3(2, 2, 2)
-		Hud.wood_current = 0
-		Hud.stone_current = 0
-		Hud.wood_needed = 100
-		Hud.stone_needed = 100
+		#Hud.wood_current = 0
+		#Hud.stone_current = 0
+		#Hud.wood_needed = 100
+		#Hud.stone_needed = 100
 		Hud.TimberCollectLabel.visible = false
 		Hud.StoneCollectLabel.visible = false
 		Hud.TimberLabel.visible = false
@@ -275,6 +287,7 @@ func upgrade_tower():
 		Hud.RoundTimer.paused = true
 		Hud.current_message = 3
 		Hud.start_dialogue()
+
 
 
 func advance_level():
@@ -287,6 +300,21 @@ func advance_level():
 	can_upgrade_tower = false
 	Hud.TowerUpgradeLabel.visible = false
 	Hud.current_level += 1
+	Hud.set_level_timer()
+
+
+func bonus_level():
+	loss_counter = 0
+	Hud.wood_needed = ceil(Hud.wood_needed * 2)
+	Hud.stone_needed = ceil(Hud.stone_needed * 2)
+	condition_met = false
+	can_upgrade_tower = false
+	Hud.TowerUpgradeLabel.visible = false
+	Hud.visible = true
+	Hud.TimberLabel.visible = true
+	Hud.StoneLabel.visible = true
+	Hud.RoundTimerLabel.visible = true
+	Hud.RoundTimer.paused = true
 	Hud.set_level_timer()
 
 

@@ -24,6 +24,7 @@ var focused_button_index = 0
 var buttons_refresh = false
 var submit_pressed = false
 var deny_pressed = false
+var destroy_pressed = false
 
 # Variables to control joystick input speed
 var debounce_time = 0.2  # Time in seconds between joystick inputs
@@ -118,8 +119,8 @@ func _on_button_submit_pressed():
 	Hud.current_message = 4
 	Hud.typing = true
 	Hud.start_dialogue()	
-	Hud.wood_current = 0
-	Hud.stone_current = 0
+	#Hud.wood_current = 0
+	#Hud.stone_current = 0
 	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
 	submit_pressed = true
 	$Fade/AnimationPlayer.play("fade")
@@ -135,8 +136,8 @@ func _on_button_deny_pressed():
 	Hud.current_message = 5
 	Hud.typing = true
 	Hud.start_dialogue()	
-	Hud.wood_current = 0
-	Hud.stone_current = 0
+	#Hud.wood_current = 0
+	#Hud.stone_current = 0
 	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
 	deny_pressed = true
 	$Fade/AnimationPlayer.play("fade")
@@ -148,6 +149,7 @@ func _on_button_destroy_pressed():
 	Hud.current_message = 6
 	Hud.typing = true
 	Hud.start_dialogue()
+	destroy_pressed = true
 	#bonus level with actual good ending. 
 
 
