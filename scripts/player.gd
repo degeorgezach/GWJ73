@@ -321,6 +321,8 @@ func advance_level():
 
 func bonus_level():
 	loss_counter = 0
+	Hud.wood_current = Hud.wood_current - Hud.wood_needed
+	Hud.stone_current = Hud.stone_current - Hud.stone_needed	
 	Hud.wood_needed = ceil(Hud.wood_needed * 2)
 	Hud.stone_needed = ceil(Hud.stone_needed * 2)
 	condition_met = false

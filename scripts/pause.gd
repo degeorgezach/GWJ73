@@ -82,4 +82,18 @@ func _on_button_resume_pressed():
 
 
 func _on_button_quit_pressed():
-	get_tree().quit()
+	Pause.visible = false
+	Hud.TimberCollectLabel.visible = false
+	Hud.StoneCollectLabel.visible = false
+	Hud.TimberLabel.visible = false
+	Hud.StoneLabel.visible = false
+	Hud.RoundTimerLabel.visible = false
+	Hud.RoundTimer.paused = true
+	Ending.TitleLabel.visible = false
+	Ending.visible = false
+	Ending.submit_pressed = false
+	Ending.deny_pressed = false
+	Ending.destroy_pressed = false
+	Ending.failure = false
+	get_tree().change_scene_to_file("res://scenes/start.tscn")
+	Music2d.Change(1)

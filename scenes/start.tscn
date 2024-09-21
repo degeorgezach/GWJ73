@@ -36,29 +36,10 @@ offset_right = 2199.0
 offset_bottom = 403.0
 theme_override_fonts/font = ExtResource("2_4tase")
 theme_override_font_sizes/font_size = 32
-text = "Start"
-horizontal_alignment = 1
-
-[node name="ButtonQuit" type="Button" parent="."]
-offset_left = -217.0
-offset_top = 125.0
-offset_right = -209.0
-offset_bottom = 133.0
-
-[node name="LabelQuit" type="Label" parent="ButtonQuit"]
-layout_mode = 0
-offset_left = 217.0
-offset_top = 458.0
-offset_right = 2137.0
-offset_bottom = 488.0
-theme_override_fonts/font = ExtResource("2_4tase")
-theme_override_font_sizes/font_size = 32
-text = "Quit
-"
+text = "Press ( E ) to Start"
 horizontal_alignment = 1
 
 [node name="Timer" type="Timer" parent="."]
 
 [connection signal="pressed" from="ButtonStart" to="." method="_on_button_start_pressed"]
-[connection signal="pressed" from="ButtonQuit" to="." method="_on_button_quit_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

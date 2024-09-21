@@ -172,7 +172,6 @@ func _on_button_destroy_pressed():
 	Hud.typing = true
 	Hud.start_dialogue()
 	destroy_pressed = true
-	#bonus level with actual good ending. 
 
 
 func _on_timer_timeout():

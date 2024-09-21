@@ -9,8 +9,7 @@ var world_instance
 
 # Reference to buttons
 @onready var buttons = [
-	$ButtonStart,
-	$ButtonQuit
+	$ButtonStart
 ]
 
 # Keep track of which button is focused

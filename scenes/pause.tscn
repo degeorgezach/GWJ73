@@ -53,7 +53,7 @@ offset_right = 2137.0
 offset_bottom = 488.0
 theme_override_fonts/font = ExtResource("1_3haho")
 theme_override_font_sizes/font_size = 32
-text = "Quit"
+text = "Return to Main Menu"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="ButtonResume" to="." method="_on_button_resume_pressed"]

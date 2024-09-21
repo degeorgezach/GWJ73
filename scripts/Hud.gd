@@ -54,8 +54,8 @@ var wood_needed = 4
 var stone_current = 0 
 var stone_needed = 3
 
-var initial_wood_needed = 1
-var initial_stone_needed = 1
+var initial_wood_needed = 4
+var initial_stone_needed = 3
 
 var typing_speed = .055
 var read_time = 20
@@ -67,11 +67,11 @@ var typing = false
 
 @onready var Content = $Label
 
-@export var lvl_1_countdown_time: int = 5 # Set initial countdown time (in seconds)
-@export var lvl_2_countdown_time: int = 40 # Set initial countdown time (in seconds)
-@export var lvl_3_countdown_time: int = 50 # Set initial countdown time (in seconds)
-@export var lvl_4_countdown_time: int = 60 # Set initial countdown time (in seconds)
-@export var lvl_999_countdown_time: int = 90 # Set initial countdown time (in seconds)
+@export var lvl_1_countdown_time: int = 45 # Set initial countdown time (in seconds)
+@export var lvl_2_countdown_time: int = 60 # Set initial countdown time (in seconds)
+@export var lvl_3_countdown_time: int = 90 # Set initial countdown time (in seconds)
+@export var lvl_4_countdown_time: int = 120 # Set initial countdown time (in seconds)
+@export var lvl_999_countdown_time: int = 180 # Set initial countdown time (in seconds)
 var time_left: int
 var current_level = 1
 
