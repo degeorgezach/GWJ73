@@ -4,6 +4,7 @@ extends CanvasLayer
 var normal_color = Color(1, 1, 1)  # Default white color
 var focus_color = Color(0, 1, 0)   # Green color for focused button
 
+@onready var TitleLabel = $Label
 @onready var ButtonSubmit = $ButtonSubmit
 @onready var ButtonDeny = $ButtonDeny
 @onready var ButtonDestroy = $ButtonDestroy
@@ -25,6 +26,7 @@ var buttons_refresh = false
 var submit_pressed = false
 var deny_pressed = false
 var destroy_pressed = false
+var failure = false
 
 # Variables to control joystick input speed
 var debounce_time = 0.2  # Time in seconds between joystick inputs
@@ -52,7 +54,7 @@ func _process(delta):
 		$Timer2.start()
 	
 	
-	if Input.is_action_just_pressed("action") and Ending.visible == true and can_click:
+	if Input.is_action_just_pressed("action") and Ending.visible == true and can_click and !submit_pressed and !deny_pressed and !destroy_pressed and !failure:
 		if focused_button_index == 0:
 			_on_button_submit_pressed()
 		elif focused_button_index == 1:
@@ -60,13 +62,11 @@ func _process(delta):
 		elif focused_button_index == 2:
 			_on_button_destroy_pressed()
 			
-	if submit_pressed or deny_pressed:
+	if submit_pressed or deny_pressed or failure:
 		# Create a frantic vibration effect by randomly offsetting the label's position    
 		var random_x = randf_range(-vibration_intensity, vibration_intensity)
 		var random_y = randf_range(-vibration_intensity, vibration_intensity)
 		Hud.Content.position = original_position + Vector2(random_x, random_y)
-		# the world get's darker. 
-		# some text on the screen says you continue to live but it's miserable. 
 		
 
 func _input(event):
@@ -118,7 +118,7 @@ func _on_button_submit_pressed():
 	$ButtonDestroy.visible = false
 	Hud.current_message = 4
 	Hud.typing = true
-	Hud.start_dialogue()	
+	Hud.start_dialogue()
 	#Hud.wood_current = 0
 	#Hud.stone_current = 0
 	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
@@ -143,6 +143,28 @@ func _on_button_deny_pressed():
 	$Fade/AnimationPlayer.play("fade")
 	focused_button_index = 999
 
+func fail():	
+	self.visible = true
+	failure = true
+	original_position = Hud.Content.position
+	$ButtonSubmit.visible = false
+	$ButtonDeny.visible = false
+	$ButtonDestroy.visible = false
+	Hud.current_message = 9
+	Hud.typing = true
+	Hud.start_dialogue()
+	Hud.TimberCollectLabel.visible = false
+	Hud.StoneCollectLabel.visible = false
+	Hud.TimberLabel.visible = false
+	Hud.StoneLabel.visible = false
+	Hud.RoundTimerLabel.visible = false
+	Hud.RoundTimer.paused = true
+	TitleLabel.visible = false
+	#Hud.wood_current = 0
+	#Hud.stone_current = 0
+	Hud.Content.add_theme_color_override("font_color", Color(1, 0, 0))  # Red color
+	$Fade/AnimationPlayer.play("fade")
+	focused_button_index = 999
 
 func _on_button_destroy_pressed():
 	self.visible = false

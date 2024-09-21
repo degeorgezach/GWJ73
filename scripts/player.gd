@@ -76,6 +76,19 @@ func _process(delta):
 			Hud.current_message = 8
 			Hud.typing = true
 			Hud.start_dialogue()
+			Ending.AnimPlayer.play("fade")
+			Ending.visible = true
+			Ending.ButtonSubmit.visible = false
+			Ending.ButtonDeny.visible = false
+			Ending.ButtonDestroy.visible = false
+			Hud.RoundTimerLabel.visible = false
+			Hud.RoundTimer.paused = true
+			Hud.TimberLabel.visible = false
+			Hud.StoneLabel.visible = false
+			Ending.TitleLabel.visible = false
+			Hud.Content.add_theme_color_override("font_color", Color(0, 1, 0))  # green color
+			$Music.Pause()
+			Music2d.Change(5)
 	
 	if condition_met or bonus_level_condition_met:
 		look_at_target()
@@ -95,7 +108,10 @@ func _process(delta):
 			Pause.focus_button(0)
 		
 	if Hud.time_left <= 0:
-		something_bad_happens(delta, 2)
+		if Ending.failure:
+			something_bad_happens(delta, 9)
+		else:
+			something_bad_happens(delta, 2)
 	else:
 		something_bad_happening = false
 		
@@ -333,11 +349,12 @@ func something_bad_happens(delta, message):
 		loss_counter += 1
 		
 		if loss_counter >= 2:
-			pass # game over
-			
-		Hud.start_dialogue()
-		Hud.wood_current = 0
-		Hud.stone_current = 0
+			Ending.failure = true
+			Ending.fail()
+		else:			
+			Hud.start_dialogue()
+			Hud.wood_current = 0
+			Hud.stone_current = 0
 	look_at_target()
 	current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)	
 	set_camera_perspective(current_fov)

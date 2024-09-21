@@ -11,8 +11,5 @@ func _ready():
 	Ending.ButtonDeny.visible = true
 	Ending.ButtonDestroy.visible = true
 	Ending.AnimPlayer.play_backwards("fade")
+	Music2d.Pause()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

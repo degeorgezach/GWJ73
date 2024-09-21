@@ -17,9 +17,9 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 "You have gathered the required materials. The tower’s demand is clear: 
 	
-You must return to the tower.",
+You must upgrade the tower.",
 	
-"You're out of time! Now we both suffer… unless you do better. 
+"You're out of time! Now we both suffer. . . unless you do better. 
 
 Restart, fool.",
 	
@@ -33,11 +33,19 @@ You have been graced with the opprotunity to keep your life, but you will be bou
 
 Since you are no longer of any use to the evil tower, it has chosen to end your life.", #5
 	
-"You have chosen to destroy.", #6,
+"You cannot destroy the tower alone. 
+
+But perhaps, you can construct a shroud strong enough to contain its malevolent gaze.", #6,
 	
 "Game Over.", # 7
 
-"You have completed the bonus level." # 8
+"Congratulations!
+
+Having collected enough materials, you build a barrier around the tower, containing its gaze and ensuring the land remains safe from corruption.", # 8
+
+"You are too slow! 
+
+The tower has grown impatient with your failures and seeks a new steward. Your time is over." # 9
 ]
 
 
@@ -59,7 +67,7 @@ var typing = false
 
 @onready var Content = $Label
 
-@export var lvl_1_countdown_time: int = 30 # Set initial countdown time (in seconds)
+@export var lvl_1_countdown_time: int = 5 # Set initial countdown time (in seconds)
 @export var lvl_2_countdown_time: int = 40 # Set initial countdown time (in seconds)
 @export var lvl_3_countdown_time: int = 50 # Set initial countdown time (in seconds)
 @export var lvl_4_countdown_time: int = 60 # Set initial countdown time (in seconds)
@@ -99,7 +107,7 @@ func _process(delta):
 	$TimberLabel.text = "Timber: " + str(wood_current) + " / " + str(wood_needed)
 	$StoneLabel.text = "Stone: " + str(stone_current) + " / " + str(stone_needed)
 	
-	if Input.is_action_just_pressed("action") and Pause.visible == false and (Ending.visible == false or (Ending.submit_pressed or Ending.deny_pressed or Ending.destroy_pressed)):
+	if Input.is_action_just_pressed("action") and Pause.visible == false and (Ending.visible == false or (Ending.submit_pressed or Ending.deny_pressed or Ending.destroy_pressed or Ending.failure)):
 		if typing and $Label.text != messages[current_message]:
 			$next_char.stop()
 			$Label.text = messages[current_message]
@@ -116,12 +124,14 @@ func _process(delta):
 			elif current_message == 3 and Ending.visible == false:
 				Ending.visible = true
 				Ending.focused_button_index = 0
-			elif current_message == 7:
+			elif current_message == 7 or current_message == 8 or current_message == 9:
 				Ending.visible = false
 				Ending.submit_pressed = false
 				Ending.deny_pressed = false
 				Ending.destroy_pressed = false
+				Ending.failure = false
 				get_tree().change_scene_to_file("res://scenes/start.tscn")
+				Music2d.Change(1)
 			elif current_message == 6:
 				current_level = 999
 			

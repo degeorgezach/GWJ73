@@ -21,6 +21,7 @@ Hud="*res://scenes/Hud.tscn"
 Pause="*res://scenes/pause.tscn"
 Ending="*res://scenes/ending.tscn"
 Loading="*res://scenes/loading.tscn"
+Music2d="*res://scenes/music2D.tscn"
 
 [display]
 
