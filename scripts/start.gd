@@ -2,7 +2,7 @@ extends CanvasLayer
 
 # Pre-define colors
 var normal_color = Color(1, 1, 1)  # Default white color
-var focus_color = Color(0, 1, 0)   # Green color for focused button
+var focus_color = Color(1, 1, 1)   # Green color for focused button
 
 @onready var world = preload("res://scenes/world.tscn")
 var world_instance

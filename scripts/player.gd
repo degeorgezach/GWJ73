@@ -78,6 +78,7 @@ func _process(delta):
 			Hud.start_dialogue()
 			Ending.AnimPlayer.play("fade")
 			Ending.visible = true
+			Ending.TitleLabel.visible = false
 			Ending.ButtonSubmit.visible = false
 			Ending.ButtonDeny.visible = false
 			Ending.ButtonDestroy.visible = false
@@ -90,7 +91,7 @@ func _process(delta):
 			$Music.Pause()
 			Music2d.Change(5)
 	
-	if condition_met or bonus_level_condition_met:
+	if condition_met or bonus_level_condition_met or Hud.current_message == 0:
 		look_at_target()
 		# Smoothly zoom in
 		current_fov = lerp(current_fov, zoomed_in_fov, zoom_speed * delta)

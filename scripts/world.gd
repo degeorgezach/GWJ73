@@ -7,6 +7,7 @@ func _ready():
 	Hud.Begin()
 	Ending.buttons_refresh = false
 	Ending.can_click = false
+	Ending.TitleLabel.visible = true
 	Ending.ButtonSubmit.visible = true
 	Ending.ButtonDeny.visible = true
 	Ending.ButtonDestroy.visible = true

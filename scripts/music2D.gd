@@ -4,7 +4,7 @@ var musicStream
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	musicStream = preload("res://assets/music/HorrorGameMusic/Track1_Eerie Silence.wav")
+	Change(2)
 	$AudioStreamPlayer2D.stream = musicStream
 	$AudioStreamPlayer2D.play()
 	

@@ -113,6 +113,7 @@ var original_position
 
 func _on_button_submit_pressed():
 	original_position = Hud.Content.position
+	$Label.visible = false
 	$ButtonSubmit.visible = false
 	$ButtonDeny.visible = false
 	$ButtonDestroy.visible = false
@@ -130,6 +131,7 @@ func _on_button_submit_pressed():
 
 func _on_button_deny_pressed():
 	original_position = Hud.Content.position
+	$Label.visible = false
 	$ButtonSubmit.visible = false
 	$ButtonDeny.visible = false
 	$ButtonDestroy.visible = false
@@ -146,7 +148,8 @@ func _on_button_deny_pressed():
 func fail():	
 	self.visible = true
 	failure = true
-	original_position = Hud.Content.position
+	original_position = Hud.Content.position	
+	$Label.visible = false
 	$ButtonSubmit.visible = false
 	$ButtonDeny.visible = false
 	$ButtonDestroy.visible = false

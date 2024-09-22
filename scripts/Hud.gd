@@ -17,13 +17,13 @@ Brave adventurer, gather the necessary materials to enhance the tower before the
 
 "You have gathered the required materials. The tower’s demand is clear: 
 	
-You must upgrade the tower.",
+You must upgrade the tower.", # 1
 	
-"You're out of time! Now we both suffer. . . unless you do better. 
+"You're out of time! Now we both suffer. . . unless you do better.
 
-Restart, fool.",
+Restart, fool.", # 2
 	
-"The tower is fully upgraded.",
+"The tower is fully upgraded.", # 3
 	
 "You have chosen to submit.
 
@@ -50,12 +50,12 @@ The tower has grown impatient with your failures and seeks a new steward. Your t
 
 
 var wood_current = 0 
-var wood_needed = 4
+var wood_needed = 8
 var stone_current = 0 
-var stone_needed = 3
+var stone_needed = 6
 
-var initial_wood_needed = 4
-var initial_stone_needed = 3
+var initial_wood_needed = 8
+var initial_stone_needed = 6
 
 var typing_speed = .055
 var read_time = 20
@@ -117,13 +117,16 @@ func _process(delta):
 			start_dialogue()
 		elif $Label.text == messages[current_message]:
 			$Label.text = ""
+			if current_message != 3 and current_message != 5 and current_message != 6 and current_message != 7 and current_message != 8 and current_message != 9:
+				current_message = 1
 			typing = false
-			if current_message == 2:
-				set_level_timer()
-				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
-			elif current_message == 3 and Ending.visible == false:
+			if current_message == 3 and Ending.visible == false:
 				Ending.visible = true
 				Ending.focused_button_index = 0
+			elif current_message == 2 or current_message == 1:
+				set_level_timer()
+				$Label.add_theme_color_override("font_color", Color(1, 1, 1))  # Set the color to white
+
 			elif current_message == 7 or current_message == 8 or current_message == 9:
 				Ending.visible = false
 				Ending.submit_pressed = false

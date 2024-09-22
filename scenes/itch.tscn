@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6s8ovt0d2njy"]
+
+[ext_resource type="FontFile" uid="uid://cb8u6mjec2gyf" path="res://assets/fonts/Old Fax.ttf" id="1_03ng0"]
+
+[node name="Itch" type="Node2D"]
+visible = false
+
+[node name="Label" type="Label" parent="."]
+offset_left = 259.0
+offset_top = 106.0
+offset_right = 1387.0
+offset_bottom = 226.0
+theme_override_fonts/font = ExtResource("1_03ng0")
+theme_override_font_sizes/font_size = 128
+text = "The"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 108.0
+offset_top = 228.0
+offset_right = 2032.0
+offset_bottom = 708.0
+theme_override_fonts/font = ExtResource("1_03ng0")
+theme_override_font_sizes/font_size = 448
+text = "Tower"
+horizontal_alignment = 1
